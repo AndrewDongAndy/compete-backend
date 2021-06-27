@@ -1,176 +1,348 @@
 yarn run v1.22.10
 $ ts-node-dev --trace-warnings --files index
-[INFO] 00:44:37 ts-node-dev ver. 1.1.6 (using ts-node ver. 9.1.1, typescript ver. 4.3.4)
-124 Mathematics 2831
-102 Implementation 2600
-25 Dynamic programming 1844
-7 Graph theory 1653
-175 Data structures 1596
-158 String 1230
-33 Greedy 908
-11 Graph traversal 858
-125 Bruteforcing 830
-97 Sorting 699
-65 Segment tree 653
-120 Tree 605
-100 Geometry 595
-95 Number theory 584
-12 Binary search 569
-126 Breadth-first search 463
-121 Arithmetic 418
-6 Combinatorics 359
-141 Simulation 358
-127 Depth-first search 343
-139 Prefix sum 318
-14 Bitmask 272
-22 Dijkstra's 267
-128 Constructive 257
-109 Ad-Hoc 254
-24 Divide and conquer 236
-81 Disjoint set 232
-5 Backtracking 222
-96 Parsing 210
-137 Case work 200
-106 Sweeping 187
-59 Priority queue 168
-92 Dynamic programming on trees 165
-71 Stack 164
-80 Two-pointer 160
-74 Set / Map by trees 159
-45 Maximum flow 154
-66 Segment tree with lazy propagation 150
-136 Set / Map by hashing 141
-9 Primality test 135
-87 Dynamic programming using bitfield 134
-140 Game theory 127
-123 Offline queries 123
-39 Exponentiation by squaring 121
-117 Arbitrary precision / Big integers 106
-49 Minimum spanning tree 101
-13 Bipartite matching 100
-62 Recursion 100
-67 Sieve of Eratosthenes 94
-8 Hashing 93
-41 Lowest common ancestor 90
-76 Strongly connected component 86
-31 Floyd–Warshall 79
-78 Topological sorting 78
-144 Linear algebra 76
-28 Fast Fourier transform 74
-20 Convex hull 73
-38 Inclusion and exclusion 72
-79 Trie 68
-161 Value / coordinate compression 68
-177 Probability theory 67
-172 Precomputation 66
-148 Knapsack 59
-26 Euclidean algorithm 58
-84 Sparse table 58
-89 Convex hull trick 57
-40 Knuth–Morris–Pratt 54
-77 Suffix array and LCP array 54
-169 Smaller to larger technique 53
-130 Square root decomposition 51
-48 Minimum cost maximum flow 50
-73 Deque 50
-68 Sliding window 49
-70 Sprague–Grundy theorem 47
-170 Parametric search 47
-43 Longest increasing sequence in O(n log n) 45
-46 Meet in the middle 45
-35 Heavy-light decomposition 44
-42 Line segment intersection check 43
-111 Calculus 42
-150 Euler tour technique 41
-18 Centroid decomposition 40
-131 Geometry; 3D 40
-115 Randomization 38
-1 2-SAT 37
-55 Persistent segment tree 36
-32 Gaussian elimination 34
-72 Queue 34
-152 Bit set 34
-142 Heuristics 33
-167 Max-flow min-cut theorem 33
-4 Articulation points and bridges 32
-93 Eulerian path / circuit 32
-101 Ternary search 32
-143 Cactus 28
-50 Mo's 26
-91 Divide and conquer optimization 26
-19 Chinese remainder theorem 25
-116 Physics 24
-110 Berlekamp–Massey 22
-119 Euler characteristic (χ=V-E+F) 22
-10 Bellman–Ford 21
-54 Parallel binary search 21
-166 Multidimensional segment tree 20
-168 Planar graph 20
-2 Aho-Corasick 19
-69 Splay tree 19
-171 Permutation cycle decomposition 19
-29 Fermat's little theorem 18
-61 Rabin–Karp 18
-155 Merge sort tree 18
-27 Extended Euclidean algorithm 16
-64 Rotating calipers 16
-98 Link/cut tree 16
-107 Dynamic programming using connection profile 16
-153 Biconnected component 16
-51 Möbius inversion 15
-56 Point in convex polygon check 15
-108 Dynamic programming using a deque 15
-151 Euler totient function 15
-154 Linked list 15
-176 0-1 BFS 15
-60 Pythagoras theorem 14
-44 Manacher's 13
-63 Regular Expression 13
-122 Numerical analysis 12
-138 Travelling salesman problem 12
-156 Interpreter 12
-58 Pollard rho 11
-134 Alien's trick 11
-164 Modular multiplicative inverse 11
-3 Area of a polygon 10
-157 Slope trick 10
-179 Linearity of expectation 10
-52 Offline dynamic connectivity 9
-57 Point in non-convex polygon check 9
-103 Linear programming 9
-145 Tree isomorphism 9
-16 Burnside's lemma 8
-34 Hall's theorem 8
-112 Kitamasa 8
-146 Discrete logarithm 8
-36 Hungarian 7
-47 Miller–Rabin 7
-162 Minimum enclosing circle 7
-181 Dual graph 7
-82 Voronoi diagram 6
-104 Matroid 6
-135 Dominator tree 6
-165 Monotone queue optimization 6
-180 Duality 6
-15 General matching 5
-53 Palindrome tree 5
-75 Stoer–Wagner 5
-83 Z 5
-90 Knuth optimization 5
-113 Lucas theorem 5
-129 Bidirectional search 4
-147 Discrete square root 4
-23 Directed minimum spanning tree 3
-132 Geometry; hyperdimensional 3
-160 Boyer–Moore majority vote 3
-163 Hirschberg's 3
-178 Statistics 3
-182 Suffix tree 3
-159 Rope 2
-173 Dancing links 2
-174 Knuth's X 2
-21 Delaunay triangulation 1
-94 Red-black tree 1
-105 Top tree 1
-149 Discrete k-th root 1
-Done in 3.02s.
+[INFO] 11:33:58 ts-node-dev ver. 1.1.6 (using ts-node ver. 9.1.1, typescript ver. 4.3.4)
+[
+  [ '124', 'Mathematics', 2832 ],
+  [ '102', 'Implementation', 2600 ],
+  [ '25', 'Dynamic programming', 1846 ],
+  [ '7', 'Graph theory', 1653 ],
+  [ '175', 'Data structures', 1599 ],
+  [ '158', 'String', 1229 ],
+  [ '33', 'Greedy', 910 ],
+  [ '11', 'Graph traversal', 858 ],
+  [ '125', 'Bruteforcing', 830 ],
+  [ '97', 'Sorting', 699 ],
+  [ '65', 'Segment tree', 654 ],
+  [ '120', 'Tree', 605 ],
+  [ '100', 'Geometry', 595 ],
+  [ '95', 'Number theory', 584 ],
+  [ '12', 'Binary search', 568 ],
+  [ '126', 'Breadth-first search', 463 ],
+  [ '121', 'Arithmetic', 419 ],
+  [ '6', 'Combinatorics', 359 ],
+  [ '141', 'Simulation', 358 ],
+  [ '127', 'Depth-first search', 343 ],
+  [ '139', 'Prefix sum', 318 ],
+  [ '14', 'Bitmask', 272 ],
+  [ '22', "Dijkstra's", 267 ],
+  [ '128', 'Constructive', 257 ],
+  [ '109', 'Ad-Hoc', 254 ],
+  [ '24', 'Divide and conquer', 236 ],
+  [ '81', 'Disjoint set', 232 ],
+  [ '5', 'Backtracking', 222 ],
+  [ '96', 'Parsing', 209 ],
+  [ '137', 'Case work', 200 ],
+  [ '106', 'Sweeping', 187 ],
+  [ '59', 'Priority queue', 168 ],
+  [ '92', 'Dynamic programming on trees', 165 ],
+  [ '71', 'Stack', 164 ],
+  [ '80', 'Two-pointer', 160 ],
+  [ '74', 'Set / Map by trees', 159 ],
+  [ '45', 'Maximum flow', 153 ],
+  [ '66', 'Segment tree with lazy propagation', 151 ],
+  [ '136', 'Set / Map by hashing', 141 ],
+  [ '9', 'Primality test', 135 ],
+  [ '87', 'Dynamic programming using bitfield', 134 ],
+  [ '140', 'Game theory', 127 ],
+  [ '123', 'Offline queries', 123 ],
+  [ '39', 'Exponentiation by squaring', 121 ],
+  [ '117', 'Arbitrary precision / Big integers', 106 ],
+  [ '13', 'Bipartite matching', 101 ],
+  [ '49', 'Minimum spanning tree', 101 ],
+  [ '62', 'Recursion', 100 ],
+  [ '67', 'Sieve of Eratosthenes', 94 ],
+  [ '8', 'Hashing', 93 ],
+  [ '41', 'Lowest common ancestor', 90 ],
+  [ '76', 'Strongly connected component', 86 ],
+  [ '31', 'Floyd–Warshall', 79 ],
+  [ '78', 'Topological sorting', 78 ],
+  [ '144', 'Linear algebra', 76 ],
+  [ '28', 'Fast Fourier transform', 74 ],
+  [ '20', 'Convex hull', 73 ],
+  [ '38', 'Inclusion and exclusion', 72 ],
+  [ '79', 'Trie', 68 ],
+  [ '161', 'Value / coordinate compression', 68 ],
+  [ '177', 'Probability theory', 67 ],
+  [ '172', 'Precomputation', 66 ],
+  [ '84', 'Sparse table', 59 ],
+  [ '148', 'Knapsack', 59 ],
+  [ '26', 'Euclidean algorithm', 58 ],
+  [ '89', 'Convex hull trick', 57 ],
+  [ '40', 'Knuth–Morris–Pratt', 54 ],
+  [ '77', 'Suffix array and LCP array', 54 ],
+  [ '169', 'Smaller to larger technique', 53 ],
+  [ '130', 'Square root decomposition', 51 ],
+  [ '48', 'Minimum cost maximum flow', 50 ],
+  [ '73', 'Deque', 50 ],
+  [ '68', 'Sliding window', 49 ],
+  [ '70', 'Sprague–Grundy theorem', 47 ],
+  [ '170', 'Parametric search', 47 ],
+  [ '43', 'Longest increasing sequence in O(n log n)', 45 ],
+  [ '46', 'Meet in the middle', 45 ],
+  [ '35', 'Heavy-light decomposition', 44 ],
+  [ '42', 'Line segment intersection check', 43 ],
+  [ '111', 'Calculus', 42 ],
+  [ '150', 'Euler tour technique', 41 ],
+  [ '18', 'Centroid decomposition', 40 ],
+  [ '131', 'Geometry; 3D', 40 ],
+  [ '115', 'Randomization', 38 ],
+  [ '1', '2-SAT', 37 ],
+  [ '55', 'Persistent segment tree', 36 ],
+  [ '32', 'Gaussian elimination', 34 ],
+  [ '72', 'Queue', 34 ],
+  [ '152', 'Bit set', 34 ],
+  [ '142', 'Heuristics', 33 ],
+  [ '167', 'Max-flow min-cut theorem', 33 ],
+  [ '4', 'Articulation points and bridges', 32 ],
+  [ '93', 'Eulerian path / circuit', 32 ],
+  [ '101', 'Ternary search', 32 ],
+  [ '143', 'Cactus', 28 ],
+  [ '50', "Mo's", 26 ],
+  [ '91', 'Divide and conquer optimization', 26 ],
+  [ '19', 'Chinese remainder theorem', 25 ],
+  [ '116', 'Physics', 24 ],
+  [ '110', 'Berlekamp–Massey', 22 ],
+  ... 72 more items
+]
+url: https://www.acmicpc.net/problemset?tier=23&algo=25&etc=ml
+[
+  Problem {
+    id: '4448',
+    title: 'Bracelets',
+    numSolved: 42,
+    submissions: 144,
+    fractionSolved: 0.37838
+  },
+  Problem {
+    id: '7727',
+    title: 'Byephone',
+    numSolved: 9,
+    submissions: 46,
+    fractionSolved: 0.24324
+  },
+  Problem {
+    id: '8131',
+    title: 'Ploughing',
+    numSolved: 61,
+    submissions: 385,
+    fractionSolved: 0.18541
+  },
+  Problem {
+    id: '8134',
+    title: 'Crystals',
+    numSolved: 6,
+    submissions: 74,
+    fractionSolved: 0.11765
+  },
+  Problem {
+    id: '8238',
+    title: 'Multidrink',
+    numSolved: 8,
+    submissions: 25,
+    fractionSolved: 0.4
+  },
+  Problem {
+    id: '8481',
+    title: 'Generator',
+    numSolved: 29,
+    submissions: 145,
+    fractionSolved: 0.29292999999999997
+  },
+  Problem {
+    id: '9589',
+    title: 'Mixing Colours',
+    numSolved: 5,
+    submissions: 23,
+    fractionSolved: 0.21739
+  },
+  Problem {
+    id: '14874',
+    title: 'Cats',
+    numSolved: 4,
+    submissions: 14,
+    fractionSolved: 0.30768999999999996
+  },
+  Problem {
+    id: '15557',
+    title: 'Snake Escaping',
+    numSolved: 19,
+    submissions: 45,
+    fractionSolved: 0.51351
+  },
+  Problem {
+    id: '16191',
+    title: 'Utilitarianism',
+    numSolved: 35,
+    submissions: 298,
+    fractionSolved: 0.13944
+  },
+  Problem {
+    id: '17046',
+    title: 'Akvizna',
+    numSolved: 9,
+    submissions: 41,
+    fractionSolved: 0.25714
+  },
+  Problem {
+    id: '17156',
+    title: 'First of Her Name',
+    numSolved: 13,
+    submissions: 18,
+    fractionSolved: 0.72222
+  },
+  Problem {
+    id: '17170',
+    title: 'Increasing Sequence',
+    numSolved: 19,
+    submissions: 101,
+    fractionSolved: 0.29688
+  },
+  Problem {
+    id: '17517',
+    title: 'Parklife',
+    numSolved: 35,
+    submissions: 84,
+    fractionSolved: 0.56452
+  },
+  Problem {
+    id: '17708',
+    title: 'Sandwich',
+    numSolved: 16,
+    submissions: 33,
+    fractionSolved: 0.7272700000000001
+  },
+  Problem {
+    id: '18283',
+    title: 'Herojski Histogram',
+    numSolved: 18,
+    submissions: 35,
+    fractionSolved: 0.54545
+  },
+  Problem {
+    id: '18371',
+    title: 'Trips',
+    numSolved: 5,
+    submissions: 16,
+    fractionSolved: 0.33332999999999996
+  },
+  Problem {
+    id: '18470',
+    title: 'Counting Cactus',
+    numSolved: 6,
+    submissions: 7,
+    fractionSolved: 0.85714
+  },
+  Problem {
+    id: '18526',
+    title: 'Bomas',
+    numSolved: 8,
+    submissions: 18,
+    fractionSolved: 0.5
+  },
+  Problem {
+    id: '18533',
+    title: 'Lunchtime Name Recall',
+    numSolved: 3,
+    submissions: 5,
+    fractionSolved: 0.6
+  },
+  Problem {
+    id: '18545',
+    title: 'The Zong of the Zee',
+    numSolved: 3,
+    submissions: 3,
+    fractionSolved: 1
+  },
+  Problem {
+    id: '18623',
+    title: 'Eevee',
+    numSolved: 6,
+    submissions: 9,
+    fractionSolved: 0.66667
+  },
+  Problem {
+    id: '18720',
+    title: 'Bookface',
+    numSolved: 19,
+    submissions: 58,
+    fractionSolved: 0.46341
+  },
+  Problem {
+    id: '18848',
+    title: 'Capital City',
+    numSolved: 10,
+    submissions: 13,
+    fractionSolved: 0.83333
+  },
+  Problem {
+    id: '19058',
+    title: 'Anna and Lucky Tickets',
+    numSolved: 9,
+    submissions: 14,
+    fractionSolved: 0.75
+  },
+  Problem {
+    id: '19381',
+    title: 'Ascending Tree',
+    numSolved: 12,
+    submissions: 29,
+    fractionSolved: 0.48
+  },
+  Problem {
+    id: '19561',
+    title: 'Viruses',
+    numSolved: 2,
+    submissions: 2,
+    fractionSolved: 1
+  },
+  Problem {
+    id: '19693',
+    title: 'Safety',
+    numSolved: 11,
+    submissions: 18,
+    fractionSolved: 0.6875
+  },
+  Problem {
+    id: '20042',
+    title: 'Hotspots',
+    numSolved: 16,
+    submissions: 95,
+    fractionSolved: 0.20779
+  },
+  Problem {
+    id: '20090',
+    title: 'Aliens',
+    numSolved: 20,
+    submissions: 54,
+    fractionSolved: 0.4
+  },
+  Problem {
+    id: '20320',
+    title: 'Ekstremna Ekspedicija',
+    numSolved: 1,
+    submissions: 2,
+    fractionSolved: 0.5
+  },
+  Problem {
+    id: '20965',
+    title: 'Minimum Cost Paths',
+    numSolved: 7,
+    submissions: 14,
+    fractionSolved: 0.77778
+  },
+  Problem {
+    id: '21102',
+    title: 'Local Maxima',
+    numSolved: 4,
+    submissions: 5,
+    fractionSolved: 1
+  },
+  Problem {
+    id: '22010',
+    title: 'Lanterns',
+    numSolved: 2,
+    submissions: 3,
+    fractionSolved: 0.66667
+  }
+]
+Done in 5.18s.
