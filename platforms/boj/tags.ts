@@ -11,17 +11,17 @@ interface Tag {
 
 export const getTags = async (): Promise<Tag[]> => {
   const { rows } = await getTable(TAGS_URL);
-  // console.log("number of tags found:", rows.length);
   const tags: Tag[] = [];
   for (const row of rows) {
     const cells = row.querySelectorAll("td");
 
+    // get the tag id (number)
     const aTag = cells[1].querySelector("a");
     const url = aTag.getAttribute("href");
     assert(url);
+    const tagId = url.split("/")[3]; // format is /problem/tag/<tagId>
 
     const tagName = aTag.innerHTML;
-    const tagId = url.split("/")[3];
     const problems = +cells[2].innerText;
     tags.push({ tagId, tagName, problems });
   }
