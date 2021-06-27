@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "target": "ES6",
+    "module": "CommonJS",
+    "sourceMap": true,
+    "removeComments": true,
+    "noImplicitAny": false,
+    "strict": true,
+    "esModuleInterop": true,
+    "outDir": "dist"
+    // "noEmit": true
+    // for compiling with noEmit, just run tsc --noEmit
+  },
+  "exclude": ["unused"]
+}
