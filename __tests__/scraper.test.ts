@@ -6,16 +6,16 @@ import { getUserSolves } from "../platforms/boj/user";
 describe("Baekjoon Online Judge scraper", () => {
   const userId = "admathnoob";
   const problemId = "9244";
+  const title = "핀볼";
 
   it("can fetch user", async () => {
     const solves = await getUserSolves(userId);
-    expect(solves.accepted.length).toEqual(0);
-    // expect(solves.accepted.length).toBeGreaterThan(0);
+    expect(solves.accepted.length).toBeGreaterThan(100);
   });
 
   it("can fetch a problem", async () => {
     const problem = await Problem.fromId(problemId);
-    expect(problem.title).toEqual("핀볼");
+    expect(problem.title).toEqual(title);
   });
 
   it("can fetch a set of problems", async () => {
@@ -33,7 +33,7 @@ describe("Baekjoon Online Judge scraper", () => {
   });
 
   it("can fetch submissions", async () => {
-    const subs = await getSubs({ problemId: "9244", userId: "admathnoob" });
+    const subs = await getSubs({ problemId, userId });
     expect(subs.length).toBeGreaterThan(0);
     const allSubs = await getSubs();
     expect(allSubs.length).toBeGreaterThan(0);
