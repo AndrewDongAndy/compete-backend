@@ -1,4 +1,4 @@
-import { getProblem, getProblems } from "../platforms/boj/problems";
+import { Problem, getProblems } from "../platforms/boj/problems";
 import { getSubs } from "../platforms/boj/subs";
 import { getTags } from "../platforms/boj/tags";
 import { getUserSolves } from "../platforms/boj/user";
@@ -13,7 +13,7 @@ describe("Baekjoon Online Judge scraper", () => {
   });
 
   it("can fetch a problem", async () => {
-    const problem = await getProblem(problemId);
+    const problem = await Problem.fromId(problemId);
     expect(problem.title).toEqual("핀볼");
   });
 

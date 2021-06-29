@@ -10,7 +10,7 @@ const problemSetUrl = (query: string) => {
   return `https://www.acmicpc.net/problemset?${query}`;
 };
 
-class Problem {
+export class Problem {
   // englishTitle = "";
 
   // TODO: check these stats
@@ -26,9 +26,27 @@ class Problem {
     // });
   }
 
-  get url(): string {
-    return problemUrl(this.id);
+  // get url(): string {
+  //   return problemUrl(this.id);
+  // }
+
+  static async fromId(id: string): Promise<Problem> {
+    const html = await getParsedHtml(problemUrl(id));
+    const title = html.querySelector("#problem_title").innerText;
+
+    const table = html.querySelector("table");
+    const { rows } = parseTable(table);
+    assert(rows.length == 1);
+    const row = rows[0];
+
+    const cells = row.querySelectorAll("td");
+    const numSolved = +cells[4].innerText;
+    const numSubs = +cells[2].innerText;
+    const fractionSolved = parseFloat(cells[5].innerText) / 100;
+    return new this(id, title, numSolved, numSubs, fractionSolved);
   }
+
+  // static async fromUrl(url: string):
 }
 
 interface ProblemQuery {
@@ -36,21 +54,6 @@ interface ProblemQuery {
   multilingual?: boolean;
   tags?: string[];
 }
-
-export const getProblem = async (id: string): Promise<Problem> => {
-  const html = await getParsedHtml(problemUrl(id));
-  const table = html.querySelector("table");
-  const { rows } = parseTable(table);
-  assert(rows.length == 1);
-  const row = rows[0];
-  const title = html.querySelector("#problem_title").innerText;
-
-  const cells = row.querySelectorAll("td");
-  const numSolved = +cells[4].innerText;
-  const numSubs = +cells[2].innerText;
-  const fractionSolved = parseFloat(cells[5].innerText) / 100;
-  return new Problem(id, title, numSolved, numSubs, fractionSolved);
-};
 
 /**
  * Gets the problems for a BOJ query.
