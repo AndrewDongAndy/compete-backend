@@ -1,4 +1,5 @@
 import assert from "assert";
+import axios from "axios";
 import { getParsedHtml } from "../../util/getHtml";
 import { getTable, parseTable } from "../../util/table";
 
@@ -10,27 +11,33 @@ const problemSetUrl = (query: string) => {
   return `https://www.acmicpc.net/problemset?${query}`;
 };
 
-export class Problem {
-  // englishTitle = "";
+export type ProblemProps = {
+  id: string;
+  title: string;
+  numSolved: number;
+  numSubs: number;
+  fractionSolved: number;
+};
 
-  // TODO: check these stats
+export class ProblemBoj implements ProblemProps {
   constructor(
     public id: string,
     public title: string,
     public numSolved: number,
     public numSubs: number,
     public fractionSolved: number
-  ) {
-    // translate(title, "en").then((text: string) => {
-    //   this.englishTitle = text;
-    // });
+  ) {}
+
+  get url(): string {
+    return problemUrl(this.id);
   }
 
-  // get url(): string {
-  //   return problemUrl(this.id);
-  // }
+  get props(): ProblemProps {
+    return Object.assign({}, this);
+  }
 
-  static async fromId(id: string): Promise<Problem> {
+  // TODO: check whether these (scraped) stats are what I think they are
+  static async fromId(id: string): Promise<ProblemBoj> {
     const html = await getParsedHtml(problemUrl(id));
     const title = html.querySelector("#problem_title").innerText;
 
@@ -42,11 +49,9 @@ export class Problem {
     const cells = row.querySelectorAll("td");
     const numSolved = +cells[4].innerText;
     const numSubs = +cells[2].innerText;
-    const fractionSolved = parseFloat(cells[5].innerText) / 100;
+    const fractionSolved = 0.01 * parseFloat(cells[5].innerText);
     return new this(id, title, numSolved, numSubs, fractionSolved);
   }
-
-  // static async fromUrl(url: string):
 }
 
 interface ProblemQuery {
@@ -74,11 +79,11 @@ HTML format:
   <td>30.255%</td>
 </tr>
 */
-export const getProblems = async ({
+export const getProblemsBoj = async ({
   tier,
   multilingual,
   tags,
-}: ProblemQuery): Promise<Problem[]> => {
+}: ProblemQuery): Promise<ProblemBoj[]> => {
   // query options
   const query: string[] = [];
   if (tier) query.push(`tier=${tier.join()}`);
@@ -91,14 +96,49 @@ export const getProblems = async ({
   // console.log(url);
   const { rows } = await getTable(url);
 
-  const problems: Problem[] = rows.map((row) => {
-    const cells = row.querySelectorAll("td");
+  const problems = rows.map(async (row) => {
     const id = row.querySelector(".list_problem_id").innerText;
-    const title = cells[1].childNodes[0].innerText;
-    const numSolved = +cells[3].childNodes[0].innerText;
-    const numSubs = +cells[4].childNodes[0].innerText;
-    const fractionSolved = parseFloat(cells[5].innerText) / 100;
-    return new Problem(id, title, numSolved, numSubs, fractionSolved);
+    return ProblemBoj.fromId(id);
   });
-  return problems;
+  return Promise.all(problems);
+
+  // const problems = rows.map((row) => {
+  //   const cells = row.querySelectorAll("td");
+  //   const id = row.querySelector(".list_problem_id").innerText;
+  //   const title = cells[1].childNodes[0].innerText;
+  //   const numSolved = +cells[3].childNodes[0].innerText;
+  //   const numSubs = +cells[4].childNodes[0].innerText;
+  //   const fractionSolved = parseFloat(cells[5].innerText) / 100;
+  //   return new Problem(id, title, numSolved, numSubs, fractionSolved);
+  // });
+  // return problems;
+};
+
+interface SolvedProblem {
+  problemId: number;
+  titleKo: string;
+  isSolvable: boolean;
+  isPartial: boolean;
+  acceptedUserCount: number;
+  level: number;
+  votedUserCount: number;
+  isLevelLocked: boolean;
+  averageTries: number; // float
+}
+
+export const getProblemsSolvedAc = async (
+  query: string,
+  page = 1
+): Promise<SolvedProblem[]> => {
+  try {
+    const res = await axios.get("https://solved.ac/api/v3/search/problem", {
+      params: { query, page },
+    });
+    // const count: number = res.data.count;
+    const items: SolvedProblem[] = res.data.items;
+    return items;
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
 };

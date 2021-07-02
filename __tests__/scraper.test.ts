@@ -1,4 +1,4 @@
-import { Problem, getProblems } from "../platforms/boj/problems";
+import { ProblemBoj, getProblemsBoj } from "../platforms/boj/problems";
 import { getSubs } from "../platforms/boj/subs";
 import { getTags } from "../platforms/boj/tags";
 import { getUserSolves } from "../platforms/boj/user";
@@ -14,12 +14,18 @@ describe("Baekjoon Online Judge scraper", () => {
   });
 
   it("can fetch a problem", async () => {
-    const problem = await Problem.fromId(problemId);
-    expect(problem.title).toEqual(title);
+    const problem = await ProblemBoj.fromId(problemId);
+    const props = problem.props;
+    expect(props.id).toBe(problemId);
+    expect(props.title).toBe(title);
+    expect(props.numSolved).toBeGreaterThan(10);
+    expect(props.numSubs).toBeGreaterThanOrEqual(524);
+    expect(props.fractionSolved).toBeGreaterThan(0);
+    expect(props.fractionSolved).toBeLessThan(1);
   });
 
   it("can fetch a set of problems", async () => {
-    const problems = await getProblems({
+    const problems = await getProblemsBoj({
       tier: [23],
       tags: ["25", "124"],
       multilingual: true, // increase the chance of English

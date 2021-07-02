@@ -8,7 +8,7 @@ import {
   clearRefreshToken,
   createAccessToken,
   sendRefreshToken,
-} from "../auth/auth";
+} from "../auth/tokens";
 
 const getRegisterErrors = (err) => {
   // console.log(err.message, err.code);
@@ -57,6 +57,7 @@ export const registerPost = async (
     const user = await User.create({ username, email, password });
     // successfully created
     await (User as any).login(username, password, res);
+    sendRefreshToken(res, user);
     const accessToken = createAccessToken(user);
     res.status(201).send({ accessToken });
   } catch (err) {
@@ -71,6 +72,7 @@ export const loginPost = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = await (User as any).login(username, password, res);
     // succeeded
+    sendRefreshToken(res, user);
     const accessToken = createAccessToken(user);
     res.status(200).send({ accessToken });
   } catch (err) {
@@ -111,7 +113,7 @@ export const logoutPost = async (
     }
   );
   clearRefreshToken(res);
-  // needs to send something back, otherwise a timeout response occurs?
+  // need to send something back, otherwise a timeout response occurs?
   res.status(200).send({ ok: true });
 };
 

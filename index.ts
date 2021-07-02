@@ -8,7 +8,6 @@ import config from "./config";
 import problemRoutes from "./routes/problemRoutes";
 
 import dotenv from "dotenv";
-import { sendReminder } from "./mailer/mailer";
 dotenv.config();
 
 const app = express();
@@ -43,7 +42,4 @@ mongoose.set("useFindAndModify", false); // suppress the DeprecationWarning
   // only start server when the database is connected
   app.listen(process.env.PORT);
   console.log("listening on port", process.env.PORT);
-
-  // sendReminder("andon9612@ugcloud.ca");
-  // sendReminder("dongandrew99@gmail.com");
 })();

@@ -1,10 +1,20 @@
 import mongoose, { Schema } from "mongoose";
 
 import bcrypt from "bcrypt";
-import { Response } from "express";
 import isEmail from "validator/lib/isEmail";
-import { sendRefreshToken } from "../auth/auth";
-import * as boj from "../platforms/boj/problems";
+
+export interface TagLevels {
+  math: number;
+  string: number;
+  dp: number;
+  graphs: number;
+  data_structures: number;
+  flow: number;
+  divide_and_conquer: number;
+  greedy: number;
+  geometry: number;
+  misc: number;
+}
 
 export interface IUser {
   _id: string;
@@ -14,7 +24,7 @@ export interface IUser {
 
   boj: {
     userId: string;
-    problems: boj.Problem[];
+    levels: number[];
   };
 
   tokenVersion: number;
@@ -53,6 +63,12 @@ const userSchema = new Schema(
       required: [true, "a password is required"],
       minLength: [6, "password must be at least 6 characters"],
     },
+
+    boj: {
+      userId: String,
+      levels: [Number],
+    },
+
     tokenVersion: {
       type: Number,
       default: 0,
@@ -69,8 +85,7 @@ userSchema.pre("save", async function (this: IUser, next) {
 
 userSchema.statics.login = async function (
   username: string,
-  password: string,
-  res: Response
+  password: string
 ): Promise<IUser> | never {
   username = username.toLowerCase();
   const user = await this.findOne({ username }).exec();
@@ -80,7 +95,6 @@ userSchema.statics.login = async function (
   if (!(await bcrypt.compare(password, user.password))) {
     throw new Error("that password is incorrect");
   }
-  sendRefreshToken(res, user);
   return user;
 };
 
