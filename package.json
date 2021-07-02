@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "postinstall": "",
+    "postinstall": "tsc",
     "start": "node dist/server.js",
     "test": "jest",
     "dev": "ts-node-dev --trace-warnings --files index"
