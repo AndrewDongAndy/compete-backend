@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 import { exit } from "process";
 
 import config from "./config";
+
+import authRoutes from "./routes/authRoutes";
 import problemRoutes from "./routes/problemRoutes";
 
 import dotenv from "dotenv";
@@ -22,6 +24,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 // routes
+app.use(authRoutes);
 app.use(problemRoutes);
 
 // connect to Mongoose
