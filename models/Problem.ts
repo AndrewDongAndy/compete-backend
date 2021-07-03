@@ -1,8 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 
-import { ProblemProps } from "../platforms/boj/problems";
+import { Problem as ProblemData } from "../common/interfaces";
 
-export interface IProblem extends ProblemProps {
+export interface IProblem extends ProblemData {
   _id: string;
   createdAt: Date;
   updatedAt: Date;
@@ -39,6 +39,11 @@ const problemSchema = new Schema(
       required: true,
       min: 0,
       max: 1,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      expires: "1d",
     },
   },
   { timestamps: true }

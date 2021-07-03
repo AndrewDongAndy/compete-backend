@@ -51,12 +51,12 @@ export const registerPost = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  // console.log("received post request for registration");
+  console.log("received post request for registration");
   const { username, email, password }: RegisterRequest = req.body;
   try {
     const user = await User.create({ username, email, password });
     // successfully created
-    await (User as any).login(username, password, res);
+    await (User as any).login(username, password);
     sendRefreshToken(res, user);
     const accessToken = createAccessToken(user);
     res.status(201).send({ accessToken });
@@ -70,7 +70,7 @@ export const registerPost = async (
 export const loginPost = async (req: Request, res: Response): Promise<void> => {
   const { username, password }: LoginRequest = req.body;
   try {
-    const user = await (User as any).login(username, password, res);
+    const user = await (User as any).login(username, password);
     // succeeded
     sendRefreshToken(res, user);
     const accessToken = createAccessToken(user);

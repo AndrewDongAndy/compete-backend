@@ -9,6 +9,7 @@ export interface RefreshTokenResponse {
 }
 
 export interface Problem {
+  id: string;
   title: string;
   tier: number;
   solved: boolean;

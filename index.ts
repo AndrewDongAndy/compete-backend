@@ -16,6 +16,7 @@ const app = express();
 
 const corsOptions = {
   origin: config.ORIGIN,
+  credentials: true,
 };
 
 // middleware

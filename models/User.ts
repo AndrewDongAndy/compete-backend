@@ -2,19 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 import bcrypt from "bcrypt";
 import isEmail from "validator/lib/isEmail";
-
-export interface TagLevels {
-  math: number;
-  string: number;
-  dp: number;
-  graphs: number;
-  data_structures: number;
-  flow: number;
-  divide_and_conquer: number;
-  greedy: number;
-  geometry: number;
-  misc: number;
-}
+import { TAGS } from "../tags";
 
 export interface IUser {
   _id: string;
@@ -66,7 +54,10 @@ const userSchema = new Schema(
 
     boj: {
       userId: String,
-      levels: [Number],
+      levels: {
+        type: [Number],
+        default: Array(TAGS.length).fill(20),
+      },
     },
 
     tokenVersion: {

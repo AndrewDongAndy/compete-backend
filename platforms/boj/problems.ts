@@ -130,6 +130,7 @@ export const getProblemsSolvedAc = async (
   query: string,
   page = 1
 ): Promise<SolvedProblem[]> => {
+  console.log(query, page);
   try {
     const res = await axios.get("https://solved.ac/api/v3/search/problem", {
       params: { query, page },

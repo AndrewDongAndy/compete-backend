@@ -3,6 +3,6 @@ import { problemsGet } from "../controllers/problemController";
 
 const router = Router();
 
-router.get("/problems/:tag", problemsGet);
+router.get("/problems", problemsGet);
 
 export default router;
