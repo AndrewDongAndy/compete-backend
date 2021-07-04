@@ -1,5 +1,4 @@
 import assert from "assert";
-import axios from "axios";
 import { getParsedHtml } from "../../util/getHtml";
 import { getTable, parseTable } from "../../util/table";
 
@@ -112,34 +111,4 @@ export const getProblemsBoj = async ({
   //   return new Problem(id, title, numSolved, numSubs, fractionSolved);
   // });
   // return problems;
-};
-
-interface SolvedProblem {
-  problemId: number;
-  titleKo: string;
-  isSolvable: boolean;
-  isPartial: boolean;
-  acceptedUserCount: number;
-  level: number;
-  votedUserCount: number;
-  isLevelLocked: boolean;
-  averageTries: number; // float
-}
-
-export const getProblemsSolvedAc = async (
-  query: string,
-  page = 1
-): Promise<SolvedProblem[]> => {
-  console.log(query, page);
-  try {
-    const res = await axios.get("https://solved.ac/api/v3/search/problem", {
-      params: { query, page },
-    });
-    // const count: number = res.data.count;
-    const items: SolvedProblem[] = res.data.items;
-    return items;
-  } catch (err) {
-    console.log(err);
-    return [];
-  }
 };

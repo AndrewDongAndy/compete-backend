@@ -1,4 +1,7 @@
-import { ProblemBoj, getProblemsBoj } from "../platforms/boj/problems";
+import {
+  ProblemBoj,
+  getProblemsBoj,
+} from "../platforms/boj/fetchProblemsFromBoj";
 import { getSubs } from "../platforms/boj/subs";
 import { getTags } from "../platforms/boj/tags";
 import { getUserSolves } from "../platforms/boj/user";

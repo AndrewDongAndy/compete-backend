@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { LoginRequest, RefreshTokenResponse } from "../common/interfaces";
+import {
+  LoginRequest,
+  RefreshTokenResponse,
+} from "../common/interfaces/requests";
 import config from "../config";
 
 import { User } from "../models/User";
@@ -51,7 +54,7 @@ export const registerPost = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  console.log("received post request for registration");
+  // console.log("received post request for registration");
   const { username, email, password }: RegisterRequest = req.body;
   try {
     const user = await User.create({ username, email, password });

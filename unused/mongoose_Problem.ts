@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-import { Problem as ProblemData } from "../common/interfaces";
+import { Problem as ProblemData } from "../common/interfaces/data";
 
 export interface IProblem extends ProblemData {
   _id: string;

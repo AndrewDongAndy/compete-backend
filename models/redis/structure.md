@@ -1,0 +1,5 @@
+- `tags:<username>` is a set of tags for the current day
+  - it is a set of indices `i` denoting `TAGS[i]`
+- `list:<username>:<i>` is a list of problem ids for the tag `tags:<username>[i]`
+  - not a set because the order matters
+- `problems:<id>` is a hash map storing data for the problem
