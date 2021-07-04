@@ -16,9 +16,9 @@ const getRedis = (keyPrefix: string) => {
     console.log(`redis with prefix ${keyPrefix} is connected`);
   });
 
-  // r.flushall().then(() => {
-  //   console.log("flushed namespace with prefix", keyPrefix);
-  // });
+  r.flushall().then(() => {
+    console.log("flushed namespace with prefix", keyPrefix);
+  });
 
   return r;
 };

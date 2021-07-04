@@ -12,7 +12,7 @@ import { Problem } from "../common/interfaces/data";
 import { TAGS } from "../tags";
 import { User } from "../models/User";
 import { fetchProblemsSolvedAc } from "../platforms/boj/fetchProblemsFromSolved";
-import { randInt } from "../util/random";
+import { randChoice, randInt } from "../util/random";
 import {
   getList,
   getUserTags,
@@ -20,6 +20,8 @@ import {
   setUserTags,
 } from "../models/redis/tagsAndLists";
 import { getProblem, cacheProblem } from "../models/redis/problems";
+
+const TAGS_PER_DAY = 4;
 
 export const problemsGet = async (
   req: Request,
@@ -43,12 +45,16 @@ export const problemsGet = async (
   const promises: Promise<void>[] = [];
   if (!tags) {
     // generate tags
-    tags = [0, 1, 2, 3];
+    const indices = Array<number>(TAGS.length);
+    for (let i = 0; i < TAGS.length; i++) {
+      indices[i] = i;
+    }
+    tags = randChoice(indices, TAGS_PER_DAY);
     promises.push(setUserTags(username, tags));
   }
   for (const tag of tags) {
     let ids = await getList(username, tag);
-    console.log("ids for tag", tag, ids);
+    // console.log("ids for tag", tag, ids);
     if (!ids) {
       // need to do solved.ac API calls
       const mid = user.boj.levels[tag];
@@ -105,7 +111,7 @@ export const problemsGet = async (
     problemSets.push([TAGS[tag].displayName, await Promise.all(problems)]);
   }
 
-  console.log(problemSets);
+  // console.log(problemSets);
   res.status(200).send({ problemSets });
   await Promise.all(promises);
 };
