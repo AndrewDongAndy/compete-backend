@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import {
   LoginRequest,
   RefreshTokenResponse,
+  RegisterFields,
 } from "../common/interfaces/requests";
 import config from "../config";
 
@@ -12,10 +13,16 @@ import {
   createAccessToken,
   sendRefreshToken,
 } from "../auth/tokens";
+import { getUserSolves } from "../platforms/boj/user";
 
-const getRegisterErrors = (err) => {
+const getRegisterErrors = async (err): Promise<RegisterFields> => {
   // console.log(err.message, err.code);
-  const errors = { email: "", username: "", password: "" };
+  const errors: RegisterFields = {
+    username: "",
+    email: "",
+    password: "",
+    bojId: "",
+  };
   if (err.code == 11000) {
     // duplicate something?
     // TODO: make this better lol
@@ -44,27 +51,38 @@ const getLoginErrors = (err) => {
   return errors;
 };
 
-interface RegisterRequest {
-  username: string;
-  email: string;
-  password: string;
-}
-
 export const registerPost = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   // console.log("received post request for registration");
-  const { username, email, password }: RegisterRequest = req.body;
+  const { username, email, password, bojId }: RegisterFields = req.body;
   try {
-    const user = await User.create({ username, email, password });
+    const solves = await getUserSolves(bojId);
+    if (!solves) {
+      res.status(400).send({
+        errors: {
+          username: "",
+          email: "",
+          password: "",
+          bojId: "that BOJ handle does not exist",
+        },
+      });
+      return;
+    }
+    const user = await User.create({
+      username,
+      email,
+      password,
+      boj: { userId: bojId },
+    });
     // successfully created
     await (User as any).login(username, password);
     sendRefreshToken(res, user);
     const accessToken = createAccessToken(user);
     res.status(201).send({ accessToken });
   } catch (err) {
-    const errors = getRegisterErrors(err);
+    const errors = await getRegisterErrors(err);
     // console.log(errors);
     res.status(400).send({ errors });
   }

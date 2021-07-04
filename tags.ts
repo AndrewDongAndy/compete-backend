@@ -48,6 +48,6 @@ export const TAGS: Tag[] = [
   {
     solvedName: "geometry",
     bojId: "100",
-    displayName: "geometry",
+    displayName: "Geometry",
   },
 ];

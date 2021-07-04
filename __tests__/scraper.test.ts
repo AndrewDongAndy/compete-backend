@@ -7,13 +7,13 @@ import { getTags } from "../platforms/boj/tags";
 import { getUserSolves } from "../platforms/boj/user";
 
 describe("Baekjoon Online Judge scraper", () => {
-  const userId = "admathnoob";
+  const bojId = "admathnoob";
   const problemId = "9244";
   const title = "핀볼";
 
   it("can fetch user", async () => {
-    const solves = await getUserSolves(userId);
-    expect(solves.accepted.length).toBeGreaterThan(100);
+    const solves = await getUserSolves(bojId);
+    expect(solves?.accepted.length).toBeGreaterThan(100);
   });
 
   it("can fetch a problem", async () => {
@@ -42,7 +42,7 @@ describe("Baekjoon Online Judge scraper", () => {
   });
 
   it("can fetch submissions", async () => {
-    const subs = await getSubs({ problemId, userId });
+    const subs = await getSubs({ problemId, userId: bojId });
     expect(subs.length).toBeGreaterThan(0);
     const allSubs = await getSubs();
     expect(allSubs.length).toBeGreaterThan(0);
