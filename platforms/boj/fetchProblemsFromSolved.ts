@@ -1,7 +1,7 @@
 import axios from "axios";
-import { Problem } from "../../common/interfaces/data";
+import { ProblemMetadata } from "../../common/interfaces/data";
 
-interface SolvedProblem {
+type SolvedProblem = {
   problemId: number;
   titleKo: string;
   isSolvable: boolean;
@@ -11,14 +11,14 @@ interface SolvedProblem {
   votedUserCount: number;
   isLevelLocked: boolean;
   averageTries: number; // float
-}
+};
 
 export const fetchProblemsSolvedAc = async (
   query: string,
   sort: "id" | "level" | "solved" | "average_try" = "level",
   direction: "desc" | "asc" = "desc",
   page = 1
-): Promise<Problem[]> => {
+): Promise<ProblemMetadata[]> => {
   console.log("fetching from solved.ac API:", query);
   try {
     const res = await axios.get("https://solved.ac/api/v3/search/problem", {
@@ -26,7 +26,7 @@ export const fetchProblemsSolvedAc = async (
     });
     // const count: number = res.data.count;
     const items: SolvedProblem[] = res.data.items;
-    return items.map<Problem>((sp) => {
+    return items.map<ProblemMetadata>((sp) => {
       return {
         id: sp.problemId.toString(),
         title: sp.titleKo,

@@ -1,6 +1,6 @@
-import { Problem } from "../../common/interfaces/data";
+import { ProblemMetadata } from "../../common/interfaces/data";
 
-export const evaluateProblem = (p: Problem): number => {
+export const evaluateProblem = (p: ProblemMetadata): number => {
   let res = 0;
   if (/^[a-z ]*$/i.test(p.title)) {
     // keep only the problems whose titles are entirely

@@ -1,0 +1,12 @@
+{
+  "problem_id": "9244",
+  "problem_lang": "1",
+  "title": "Pinball",
+  "description": "<p>Maria is quite addicted to pinball. She can shoot the ball to any position at the top of the board, but she cannot predict where the ball will end when it falls down, because it hits many bumpers on its way down.</p>\r\n\r\n<p>She decided to model the pinball table as line segments and assume e that the ball is a point that falls from in\ufb01nite height. The ball falls straight vertically unless there is a segment immediately below it, in which case it follows the direction of the segment downwards until its end.</p>\r\n\r\n<p>As you would expect the segments are closed, that is an endpoint is part of its segment. Pairs of segments do not intersect, not even at endpoints, and none is vertical or horizontal. Segments are not given in any speci\ufb01c order.</p>\r\n",
+  "input": "<p>The first line contains an integer N (0 &le; N &le; 100,000), the number of segments. Then N lines follow, each with four integers x<sub>1</sub> y<sub>1</sub> x<sub>2</sub> y<sub>2</sub>, the coordinates of a segment (-1,000,000 &le; x<sub>i</sub>, y<sub>i</sub> &le; 1,000,000). The last line contains an integer x<sub>0</sub> (-1,000,000 &le; x<sub>0</sub> &le; 1,000,000), the initial x-coordinate of the ball.</p>\r\n",
+  "output": "<p>Output a single integer x<sub>T</sub>, the \ufb01nal x-coordinate of the ball.</p>\r\n\r\n<p>&nbsp;</p>\r\n",
+  "hint": "",
+  "original": "1",
+  "html_title": "0",
+  "problem_lang_tcode": "English"
+}

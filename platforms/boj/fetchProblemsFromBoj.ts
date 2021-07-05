@@ -1,4 +1,6 @@
 import assert from "assert";
+import { FullProblem } from "../../common/interfaces/data";
+
 import { getParsedHtml } from "../../util/getHtml";
 import { getTable, parseTable } from "../../util/table";
 
@@ -10,48 +12,60 @@ const problemSetUrl = (query: string) => {
   return `https://www.acmicpc.net/problemset?${query}`;
 };
 
-export type ProblemProps = {
-  id: string;
+type BojHtmlProblemData = {
+  problem_id: string;
+  problem_lang: string;
   title: string;
-  numSolved: number;
-  numSubs: number;
-  fractionSolved: number;
+  description: string;
+  input: string;
+  output: string;
+  hint: string;
+  original: string;
+  html_title: string;
+  problem_lang_tcode: string;
 };
 
-export class ProblemBoj implements ProblemProps {
-  constructor(
-    public id: string,
-    public title: string,
-    public numSolved: number,
-    public numSubs: number,
-    public fractionSolved: number
-  ) {}
+export const fetchProblemBoj = async (id: string): Promise<FullProblem> => {
+  const html = await getParsedHtml(problemUrl(id));
+  const base64 = html.querySelectorAll("#problem-lang-base64");
 
-  get url(): string {
-    return problemUrl(this.id);
+  let title: string;
+  let statement = "";
+  if (base64.length == 0) {
+    // detect if Korean?
+    title = html.querySelector("#problem_title").innerText;
+    statement = html.querySelector("#problem_description").innerHTML;
+  } else {
+    const s = base64[0].innerText;
+    const byLanguage: BojHtmlProblemData[] = JSON.parse(btoa(s));
+    let data = byLanguage.find((d) => d.problem_lang_tcode == "English");
+    if (!data) {
+      data = byLanguage[0];
+    }
+    title = data.title;
+    statement = data.description;
   }
 
-  get props(): ProblemProps {
-    return Object.assign({}, this);
-  }
+  const table = html.querySelector("table");
+  const { rows } = parseTable(table);
+  assert(rows.length == 1);
 
+  // const row = rows[0];
+  // const cells = row.querySelectorAll("td");
+  // const numSolved = +cells[4].innerText;
+  // const numSubs = +cells[2].innerText;
+  // const fractionSolved = 0.01 * parseFloat(cells[5].innerText);
+  return {
+    id,
+    title,
+    tier: -1,
+    statementHtml: statement,
+    // numSolved,
+    // numSubs,
+    // fractionSolved,
+  };
   // TODO: check whether these (scraped) stats are what I think they are
-  static async fromId(id: string): Promise<ProblemBoj> {
-    const html = await getParsedHtml(problemUrl(id));
-    const title = html.querySelector("#problem_title").innerText;
-
-    const table = html.querySelector("table");
-    const { rows } = parseTable(table);
-    assert(rows.length == 1);
-    const row = rows[0];
-
-    const cells = row.querySelectorAll("td");
-    const numSolved = +cells[4].innerText;
-    const numSubs = +cells[2].innerText;
-    const fractionSolved = 0.01 * parseFloat(cells[5].innerText);
-    return new this(id, title, numSolved, numSubs, fractionSolved);
-  }
-}
+};
 
 interface ProblemQuery {
   tier?: number[];
@@ -82,7 +96,7 @@ export const getProblemsBoj = async ({
   tier,
   multilingual,
   tags,
-}: ProblemQuery): Promise<ProblemBoj[]> => {
+}: ProblemQuery): Promise<FullProblem[]> => {
   // query options
   const query: string[] = [];
   if (tier) query.push(`tier=${tier.join()}`);
@@ -97,7 +111,7 @@ export const getProblemsBoj = async ({
 
   const problems = rows.map(async (row) => {
     const id = row.querySelector(".list_problem_id").innerText;
-    return ProblemBoj.fromId(id);
+    return fetchProblemBoj(id);
   });
   return Promise.all(problems);
 

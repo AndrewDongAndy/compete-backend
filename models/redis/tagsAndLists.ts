@@ -3,11 +3,8 @@ import { listRedis, tagsRedis } from "./redisClients";
 export const getList = async (
   username: string,
   tagId: number
-): Promise<string[] | null> => {
+): Promise<string[]> => {
   const key = `${username}:${tagId}`;
-  if (!(await listRedis.exists(key))) {
-    return null;
-  }
   return listRedis.lrange(key, 0, -1);
 };
 
@@ -26,7 +23,6 @@ export const setList = async (
   const key = `${username}:${tagId}`;
   // expire at the next midnight
   const expiryTime = new Date().setHours(24, 0, 0, 0);
-  console.log("time until expiry:", Date.now() - expiryTime);
   await listRedis
     .multi()
     .rpush(key, ids) // push to the right
@@ -46,7 +42,6 @@ export const setUserTags = async (
 ): Promise<void> => {
   // expire at the next midnight
   const expiryTime = new Date().setHours(24, 0, 0, 0);
-  console.log("time until expiry:", Date.now() - expiryTime);
   await tagsRedis
     .multi()
     .sadd(username, tags)

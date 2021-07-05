@@ -8,6 +8,8 @@ import config from "./config";
 
 import authRoutes from "./routes/authRoutes";
 import problemRoutes from "./routes/problemRoutes";
+import recommendationsRoutes from "./routes/recommendationsRoutes";
+import userRoutes from "./routes/userRoutes";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -27,6 +29,8 @@ app.use(express.json());
 // routes
 app.use(authRoutes);
 app.use(problemRoutes);
+app.use(recommendationsRoutes);
+app.use(userRoutes);
 
 // connect to Mongoose
 mongoose.set("useFindAndModify", false); // suppress the DeprecationWarning

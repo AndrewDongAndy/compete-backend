@@ -3,7 +3,8 @@ export interface User {
   bojId: string;
 }
 
-export type Problem = {
+// change this to metadata?
+export type ProblemMetadata = {
   id: string;
   title: string;
   tier: number;
@@ -13,7 +14,11 @@ export type Problem = {
 };
 
 export type ProblemForUser = {
-  problem: Problem;
+  problem: ProblemMetadata;
   forUser: string;
   solved: boolean;
 };
+
+export interface FullProblem extends ProblemMetadata {
+  statementHtml: string; // use base64 encoding for compression?
+}

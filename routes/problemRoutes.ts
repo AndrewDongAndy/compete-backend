@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { problemsGet } from "../controllers/problemController";
+
+import { problemGet } from "../controllers/problemController";
 
 const router = Router();
 
-router.get("/problems", problemsGet);
+router.get("/problem/:id", problemGet);
 
 export default router;
