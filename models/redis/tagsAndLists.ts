@@ -26,6 +26,7 @@ export const setList = async (
   const key = `${username}:${tagId}`;
   // expire at the next midnight
   const expiryTime = new Date().setHours(24, 0, 0, 0);
+  console.log("time until expiry:", Date.now() - expiryTime);
   await listRedis
     .multi()
     .rpush(key, ids) // push to the right
@@ -33,19 +34,22 @@ export const setList = async (
     .exec();
 };
 
-export const getUserTags = async (
-  username: string
-): Promise<number[] | null> => {
-  if (!(await tagsRedis.exists(username))) {
-    return null;
-  }
+export const getUserTags = async (username: string): Promise<number[]> => {
   // convert to number
-  return (await tagsRedis.smembers(username)).map((i) => +i);
+  const tags = await tagsRedis.smembers(username);
+  return tags.map((i) => +i);
 };
 
 export const setUserTags = async (
   username: string,
   tags: number[]
 ): Promise<void> => {
-  await tagsRedis.sadd(username, tags);
+  // expire at the next midnight
+  const expiryTime = new Date().setHours(24, 0, 0, 0);
+  console.log("time until expiry:", Date.now() - expiryTime);
+  await tagsRedis
+    .multi()
+    .sadd(username, tags)
+    .expireat(username, expiryTime)
+    .exec();
 };

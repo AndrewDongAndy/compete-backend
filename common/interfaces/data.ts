@@ -11,3 +11,9 @@ export type Problem = {
   // numSubs: number;
   // fractionSolved: number;
 };
+
+export type ProblemForUser = {
+  problem: Problem;
+  forUser: string;
+  solved: boolean;
+};

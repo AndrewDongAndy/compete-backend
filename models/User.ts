@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 import bcrypt from "bcrypt";
 import isEmail from "validator/lib/isEmail";
-import { TAGS } from "../tags";
+import { CATEGORIES } from "../categories";
 
 export interface IUser {
   _id: string;
@@ -56,7 +56,12 @@ const userSchema = new Schema(
       userId: String,
       levels: {
         type: [Number],
-        default: Array(TAGS.length).fill(20),
+        default: Array(CATEGORIES.length).fill(3),
+        validate: [
+          // all levels must be integers in the range [3, 28]
+          (arr: number[]) => arr.every((level) => 3 <= level && level <= 28),
+          "invalid array of levels",
+        ],
       },
     },
 

@@ -74,7 +74,9 @@ export const registerPost = async (
       username,
       email,
       password,
-      boj: { userId: bojId },
+      boj: {
+        userId: bojId,
+      },
     });
     // successfully created
     await (User as any).login(username, password);

@@ -8,8 +8,8 @@ username (required): the username to fetch the problems for
 import assert from "assert";
 import { Request, Response } from "express";
 
-import { Problem } from "../common/interfaces/data";
-import { TAGS } from "../tags";
+import { Problem, ProblemForUser } from "../common/interfaces/data";
+import { CATEGORIES } from "../categories";
 import { User } from "../models/User";
 import { fetchProblemsSolvedAc } from "../platforms/boj/fetchProblemsFromSolved";
 import { randChoice, randInt } from "../util/random";
@@ -20,6 +20,8 @@ import {
   setUserTags,
 } from "../models/redis/tagsAndLists";
 import { getProblem, cacheProblem } from "../models/redis/problems";
+import { evaluateProblem } from "../platforms/boj/scoreProblem";
+import { getUserSolves } from "../platforms/boj/user";
 
 const TAGS_PER_DAY = 4;
 
@@ -37,16 +39,21 @@ export const problemsGet = async (
     return;
   }
 
-  // make sure each problem appears in <= 1 set
-  const usedIds = new Set<string>();
-  const problemSets: [string, Problem[]][] = [];
+  const userSolves = await getUserSolves(user.boj.userId);
+  if (!userSolves) {
+    res.status(404).send({ message: "unable to get user solves" });
+    return;
+  }
 
+  const problemSets: [string, ProblemForUser[]][] = [];
+
+  // TODO: do this more concurrently
   let tags = await getUserTags(username);
   const promises: Promise<void>[] = [];
-  if (!tags) {
+  if (tags.length == 0) {
     // generate tags
-    const indices = Array<number>(TAGS.length);
-    for (let i = 0; i < TAGS.length; i++) {
+    const indices = Array<number>(CATEGORIES.length);
+    for (let i = 0; i < CATEGORIES.length; i++) {
       indices[i] = i;
     }
     tags = randChoice(indices, TAGS_PER_DAY);
@@ -56,12 +63,15 @@ export const problemsGet = async (
     let ids = await getList(username, tag);
     // console.log("ids for tag", tag, ids);
     if (!ids) {
+      // make sure each problem appears in <= 1 set
+      const usedIds = new Set<string>();
       // need to do solved.ac API calls
       const mid = user.boj.levels[tag];
       ids = [];
       for (let tier = mid - 2; tier <= mid + 2; tier++) {
+        const tagNames = CATEGORIES[tag].tags.map((t) => t.solvedName);
         const queryParts = [
-          `tag:${TAGS[tag].solvedName}`,
+          tagNames.map((name) => `tag:${name}`).join("|"),
           `tier:${tier}`,
           `!solved_by:${user.boj.userId}`,
           "solvable:true",
@@ -69,31 +79,33 @@ export const problemsGet = async (
           "solved:25..", // at least 25 people solved
         ];
         const query = queryParts.join(" ");
-        let problemsFromSolved: Problem[];
+        let allProblems: Problem[];
         try {
-          problemsFromSolved = await fetchProblemsSolvedAc(query);
+          allProblems = await fetchProblemsSolvedAc(query);
         } catch (err) {
           res.status(404).send({ message: "too many requests?" });
           return;
         }
 
-        // TODO: assign a score for each problem?
-        const english = problemsFromSolved.filter((problem) => {
-          // keep only the problems whose titles are entirely
-          // alphanumeric to increase the chance of English
-          return /^[a-z ]*$/i.test(problem.title);
-          // TODO: query problems from acmicpc.net and use ML to check if it's in English!
-        });
-        const newProblems = english.filter((problem) => {
+        // cache everything
+        for (const problem of allProblems) {
+          promises.push(cacheProblem(problem));
+        }
+
+        const unused = allProblems.filter((problem) => {
           return !usedIds.has(problem.id);
         });
-        for (const problem of newProblems) {
-          cacheProblem(problem);
+        const count = unused.length;
+        const scores = unused.map((p) => evaluateProblem(p));
+
+        const order = Array<number>(count);
+        for (let i = 0; i < count; i++) {
+          order[i] = i;
         }
-        const count = newProblems.length;
+        order.sort((i, j) => scores[j] - scores[i]); // by decreasing score
 
         if (count > 0) {
-          const chosen = newProblems[randInt(0, count - 1)];
+          const chosen = unused[randInt(0, count - 1)];
           ids.push(chosen.id);
           usedIds.add(chosen.id);
         } else {
@@ -103,12 +115,20 @@ export const problemsGet = async (
       }
       promises.push(setList(username, tag, ids));
     }
-    const problems = ids.map(async (id: string) => {
-      const p = await getProblem(id);
-      assert(p);
+    const problemsForUser = ids.map(async (id: string) => {
+      const problem = await getProblem(id);
+      assert(problem);
+      const p: ProblemForUser = {
+        problem,
+        forUser: username,
+        solved: userSolves.accepted.includes(id),
+      };
       return p;
     });
-    problemSets.push([TAGS[tag].displayName, await Promise.all(problems)]);
+    problemSets.push([
+      CATEGORIES[tag].displayName,
+      await Promise.all(problemsForUser),
+    ]);
   }
 
   // console.log(problemSets);

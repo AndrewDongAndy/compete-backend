@@ -13,7 +13,7 @@ const getRedis = (keyPrefix: string) => {
   });
 
   r.on("connect", () => {
-    console.log(`redis with prefix ${keyPrefix} is connected`);
+    console.log(`redis with prefix "${keyPrefix}" is connected`);
   });
 
   // r.flushall().then(() => {

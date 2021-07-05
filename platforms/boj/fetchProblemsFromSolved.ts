@@ -15,12 +15,14 @@ interface SolvedProblem {
 
 export const fetchProblemsSolvedAc = async (
   query: string,
+  sort: "id" | "level" | "solved" | "average_try" = "level",
+  direction: "desc" | "asc" = "desc",
   page = 1
 ): Promise<Problem[]> => {
   console.log("fetching from solved.ac API:", query);
   try {
     const res = await axios.get("https://solved.ac/api/v3/search/problem", {
-      params: { query, page },
+      params: { query, page, sort, direction },
     });
     // const count: number = res.data.count;
     const items: SolvedProblem[] = res.data.items;
