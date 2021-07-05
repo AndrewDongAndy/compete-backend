@@ -23,7 +23,7 @@ export const getProblem = async (
 };
 
 export const cacheProblem = async (p: ProblemMetadata): Promise<void> => {
-  console.log("caching problem", p.id);
+  // console.log("caching problem", p.id);
   const key = p.id;
   await problemsRedis
     .multi()
