@@ -13,13 +13,11 @@ import { CATEGORIES } from "../categories";
 import { User } from "../models/User";
 import { fetchProblemsSolvedAc } from "../platforms/boj/fetchProblemsFromSolved";
 import { randChoice, randInt } from "../util/random";
-import {
-  getList,
-  getUserTags,
-  setList,
-  setUserTags,
-} from "../models/redis/tagsAndLists";
+
+import { getUserTags, setUserTags } from "../models/redis/categories";
+import { getList, setList } from "../models/redis/lists";
 import { getProblem, cacheProblem } from "../models/redis/problems";
+
 import { evaluateProblem } from "../platforms/boj/scoreProblem";
 import { getUserSolves } from "../platforms/boj/user";
 

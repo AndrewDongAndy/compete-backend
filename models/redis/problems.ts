@@ -1,12 +1,12 @@
 /*
-Redis caching.
+Caching the problem data using Redis.
 */
 
 import { problemsRedis } from "./redisClients";
 
 import { ProblemMetadata } from "../../common/interfaces/data";
 
-const PROBLEM_TTL = 7 * 24 * 60 * 60; // one week
+const PROBLEM_TTL = 7 * 24 * 60 * 60; // one week, in seconds
 
 // const isValidProblemId = (id: string) => {
 //   return /^[1-9][0-9]{3,}$/.test(id);

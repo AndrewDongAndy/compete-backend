@@ -23,6 +23,7 @@ const getRedis = (keyPrefix: string) => {
   return r;
 };
 
-export const tagsRedis = getRedis("t:");
+export const categoriesRedis = getRedis("c:");
 export const problemsRedis = getRedis("p:");
 export const listRedis = getRedis("l:");
+export const usersRedis = getRedis("u:");

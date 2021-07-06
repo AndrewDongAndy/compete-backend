@@ -31,10 +31,14 @@ export const fetchProblemBoj = async (id: string): Promise<FullProblem> => {
 
   let title: string;
   let statement = "";
+  let inputSpec = "";
+  let outputSpec = "";
   if (base64.length == 0) {
     // detect if Korean?
     title = html.querySelector("#problem_title").innerText;
     statement = html.querySelector("#problem_description").innerHTML;
+    inputSpec = html.querySelector("#problem_input").innerHTML;
+    outputSpec = html.querySelector("#problem_output").innerHTML;
   } else {
     const s = base64[0].innerText;
     const byLanguage: BojHtmlProblemData[] = JSON.parse(btoa(s));
@@ -44,6 +48,8 @@ export const fetchProblemBoj = async (id: string): Promise<FullProblem> => {
     }
     title = data.title;
     statement = data.description;
+    inputSpec = data.input;
+    outputSpec = data.output;
   }
 
   const table = html.querySelector("table");
@@ -60,6 +66,8 @@ export const fetchProblemBoj = async (id: string): Promise<FullProblem> => {
     title,
     tier: -1,
     statementHtml: statement,
+    inputSpecHtml: inputSpec,
+    outputSpecHtml: outputSpec,
     // numSolved,
     // numSubs,
     // fractionSolved,

@@ -15,9 +15,6 @@ const config = {
       ? `https://api.compete.${DOMAIN}`
       : `http://localhost:${process.env.PORT}`,
 
-  // 15-second countdown (inspection) before races
-  COUNTDOWN_DURATION: process.env.NODE_ENV == "production" ? 15000 : 3000,
-
   // name of the cookie that stores the refresh token;
   // not touched on the frontend
   REFRESH_TOKEN_COOKIE_NAME: "compete_refresh_token",
@@ -26,6 +23,10 @@ const config = {
   ACCESS_TOKEN_EXPIRY_TIME: "15m",
   REFRESH_TOKEN_EXPIRY_TIME: "7d",
   REFRESH_TOKEN_EXPIRY_TIME_MILLIS: 1000 * 60 * 60 * 24 * 7,
+
+  // when the data refreshes: 8:30 AM
+  REFRESH_HOUR: 8,
+  REFRESH_MINUTE: 30,
 };
 
 export default config;
