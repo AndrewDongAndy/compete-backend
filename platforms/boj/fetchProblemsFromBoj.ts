@@ -1,4 +1,6 @@
 import assert from "assert";
+import translate from "google-translate-api";
+
 import { FullProblem } from "../../common/interfaces/data";
 
 import { getParsedHtml } from "../../util/getHtml";
@@ -35,13 +37,19 @@ export const fetchProblemBoj = async (id: string): Promise<FullProblem> => {
   let outputSpec = "";
   if (base64.length == 0) {
     // detect if Korean?
+    // const text = html.querySelector("#problem_title").innerText;
+    // const res = await translate(text);
+    // html.querySelector("#problem_title").set_content(res.text);
     title = html.querySelector("#problem_title").innerText;
     statement = html.querySelector("#problem_description").innerHTML;
     inputSpec = html.querySelector("#problem_input").innerHTML;
     outputSpec = html.querySelector("#problem_output").innerHTML;
+    // console.log("innerText:", html.innerText);
   } else {
     const s = base64[0].innerText;
-    const byLanguage: BojHtmlProblemData[] = JSON.parse(btoa(s));
+    const byLanguage: BojHtmlProblemData[] = JSON.parse(
+      Buffer.from(s, "base64").toString()
+    );
     let data = byLanguage.find((d) => d.problem_lang_tcode == "English");
     if (!data) {
       data = byLanguage[0];
