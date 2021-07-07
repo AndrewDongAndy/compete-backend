@@ -1,3 +1,7 @@
+/*
+Keys are of the form (prefix):<username>:<tagNumber>.
+*/
+
 import { getNextDate } from "./nextDate";
 import { listRedis } from "./redisClients";
 

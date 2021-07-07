@@ -1,5 +1,5 @@
 import assert from "assert";
-import translate from "google-translate-api";
+// import translate from "google-translate-api";
 
 import { FullProblem } from "../../common/interfaces/data";
 

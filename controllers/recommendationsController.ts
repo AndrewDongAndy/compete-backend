@@ -61,8 +61,9 @@ const getTagsForDay = async (username: string) => {
 const getIdsForTag = async (
   username: string,
   tag: number,
-  bojId: string,
-  level: number
+  // bojId: string,
+  level: number,
+  solved: Set<string>
 ) => {
   const ids = await getList(username, tag);
   if (ids.length == 0) {
@@ -72,7 +73,7 @@ const getIdsForTag = async (
       const queryParts = [
         tagNames.map((name) => `tag:${name}`).join("|"),
         `tier:${tier}`,
-        `!solved_by:${bojId}`,
+        // `!solved_by:${bojId}`, // solved.ac doesn't update very quickly?
         "solvable:true",
         "average_try:..5", // not too many tries needed to solve
         "solved:25..", // at least 25 people solved
@@ -89,7 +90,8 @@ const getIdsForTag = async (
         // cache everything
         cachePromises.push(cacheProblem(problem));
       }
-      const chosen = chooseProblem(forTier);
+      const unsolved = forTier.filter((p) => !solved.has(p.id));
+      const chosen = chooseProblem(unsolved);
       if (chosen) {
         ids.push(chosen.id);
       }
@@ -120,14 +122,13 @@ export const recommendationsGet = async (
     res.status(404).send({ message: "unable to get user solves" });
     return;
   }
+  const setSolved = new Set(userSolves.accepted);
 
   // TODO: do this more concurrently
   const tags = await getTagsForDay(username);
   const promises: Promise<string[]>[] = [];
   for (const tag of tags) {
-    promises.push(
-      getIdsForTag(username, tag, user.boj.userId, user.boj.levels[tag])
-    );
+    promises.push(getIdsForTag(username, tag, user.boj.levels[tag], setSolved));
   }
   const idsByTag = await Promise.all(promises);
 
@@ -141,7 +142,7 @@ export const recommendationsGet = async (
           const p: ProblemForUser = {
             problem,
             forUser: username,
-            solved: userSolves.accepted.includes(id),
+            solved: setSolved.has(id),
           };
           return p;
         });
