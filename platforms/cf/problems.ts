@@ -15,12 +15,10 @@ export const fetchProblems = async (
     const params = {};
     if (tagId != undefined) {
       params["tags"] = CATEGORIES[tagId].tags.cf.join(";");
-      console.log(params["tags"]);
     }
     const res = await cfAxios.get("/problemset.problems", {
       params,
     });
-    console.log(res.data);
     if (res.data.status != "OK") {
       throw new Error(`Codeforces API returned error: ${res.data.comment}`);
     }

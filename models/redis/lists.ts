@@ -28,7 +28,6 @@ export const setList = async (
   ids: string[]
 ): Promise<void> => {
   const key = `${username}:${platform}:${tagId}`;
-  console.log(key, ids);
   // expire at the next midnight
   const expiryDate = getNextDate();
   const expiryTime = expiryDate.getTime() / 1000; // convert to seconds
@@ -37,5 +36,4 @@ export const setList = async (
     .rpush(key, ids) // push to the right
     .expireat(key, expiryTime)
     .exec();
-  console.log("list set");
 };

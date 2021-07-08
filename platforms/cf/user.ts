@@ -4,7 +4,7 @@ import { Submission } from "../../common/interfaces/cf/data";
 import { contestProblemId } from "./problems";
 
 export const fetchUserSolves = async (cfId: string): Promise<Set<string>> => {
-  console.log("fetching user solves for", cfId);
+  console.log("fetching Codeforces user solves for", cfId);
   try {
     const res = await cfAxios.get("/user.status", {
       params: { handle: cfId },

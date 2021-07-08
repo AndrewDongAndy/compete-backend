@@ -14,6 +14,7 @@ import {
   sendRefreshToken,
 } from "../auth/tokens";
 import { getUserSolves } from "../platforms/boj/user";
+import { fetchUserSolves } from "../platforms/cf/user";
 
 const getRegisterErrors = async (err): Promise<RegisterFields> => {
   // console.log(err.message, err.code);
@@ -22,6 +23,7 @@ const getRegisterErrors = async (err): Promise<RegisterFields> => {
     email: "",
     password: "",
     bojId: "",
+    cfId: "",
   };
   if (err.code == 11000) {
     // duplicate something?
@@ -56,16 +58,18 @@ export const registerPost = async (
   res: Response
 ): Promise<void> => {
   // console.log("received post request for registration");
-  const { username, email, password, bojId }: RegisterFields = req.body;
+  const { username, email, password, bojId, cfId }: RegisterFields = req.body;
   try {
-    const solves = await getUserSolves(bojId);
-    if (!solves) {
+    const validBojId = bojId == "" || (await getUserSolves(bojId)) != null;
+    const validCfId = cfId == "" || (await fetchUserSolves(cfId)) != null;
+    if (!validBojId || !validCfId) {
       res.status(400).send({
         errors: {
           username: "",
           email: "",
           password: "",
-          bojId: "that BOJ handle does not exist",
+          bojId: !validBojId ? "that BOJ handle does not exist" : "",
+          cfId: !validCfId ? "that CF handle does not exist" : "",
         },
       });
       return;
@@ -76,6 +80,9 @@ export const registerPost = async (
       password,
       boj: {
         userId: bojId,
+      },
+      cf: {
+        userId: cfId,
       },
     });
     // successfully created
