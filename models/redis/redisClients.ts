@@ -16,14 +16,10 @@ const getRedis = (keyPrefix: string) => {
     console.log(`redis with prefix "${keyPrefix}" is connected`);
   });
 
-  // r.flushall().then(() => {
-  //   console.log("flushed namespace with prefix", keyPrefix);
-  // });
-
   return r;
 };
 
-export const categoriesRedis = getRedis("c:");
-export const problemsRedis = getRedis("p:");
-export const listRedis = getRedis("l:");
-export const usersRedis = getRedis("u:");
+export const categoriesRedis = getRedis("boj:c:");
+export const listRedis = getRedis("boj:l:");
+export const problemsRedis = getRedis("boj:p:");
+export const usersRedis = getRedis("boj:u:");

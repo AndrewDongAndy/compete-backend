@@ -1,5 +1,5 @@
 /*
-GET /problems
+GET /boj/recommendations
 
 query parameters:
 username (required): the username to fetch the problems for
@@ -8,55 +8,17 @@ username (required): the username to fetch the problems for
 import assert from "assert";
 import { Request, Response } from "express";
 
-import { ProblemMetadata, ProblemForUser } from "../common/interfaces/data";
-import { CATEGORIES } from "../categories";
-import { User } from "../models/User";
-import { fetchProblemsSolvedAc } from "../platforms/boj/fetchProblemsFromSolved";
-import { randChoice, randInt } from "../util/random";
+import { ProblemMetadata, ProblemForUser } from "../../common/interfaces/data";
+import CATEGORIES from "../../categories/categories";
+import { User } from "../../models/User";
+import { fetchProblemsSolvedAc } from "../../platforms/boj/fetchProblemsFromSolved";
 
-import { getUserTags, setUserTags } from "../models/redis/categories";
-import { getList, setList } from "../models/redis/lists";
-import { getProblem, cacheProblem } from "../models/redis/problems";
+import { getList, setList } from "../../models/redis/lists";
+import { getProblem, cacheProblems } from "../../models/redis/problems";
 
-import { evaluateProblem } from "../platforms/boj/scoreProblem";
-import { getUserSolves } from "../platforms/boj/user";
-
-const TAGS_PER_DAY = 4;
-
-const chooseProblem = (problems: ProblemMetadata[]): ProblemMetadata | null => {
-  const count = problems.length;
-  if (count == 0) {
-    return null;
-  }
-  const scores = problems.map((p) => evaluateProblem(p));
-  const indices = Array<number>(count);
-  for (let i = 0; i < count; i++) indices[i] = i;
-  const maxScore = Math.max(...scores);
-  const isMax = indices.filter((i) => scores[i] == maxScore);
-  assert(isMax.length > 0);
-  const i = isMax[randInt(0, isMax.length - 1)];
-  const chosen = problems[i];
-  return chosen;
-};
-
-const getTagsForDay = async (username: string) => {
-  let tags = await getUserTags(username);
-  if (tags.length == 0) {
-    const indices = Array<number>(CATEGORIES.length);
-    for (let i = 0; i < CATEGORIES.length; i++) {
-      indices[i] = i;
-    }
-    tags = randChoice(indices, TAGS_PER_DAY);
-    await setUserTags(username, tags);
-  }
-  // send tags in alphabetical order
-  tags.sort((x, y) => {
-    const nameX = CATEGORIES[x].displayName;
-    const nameY = CATEGORIES[y].displayName;
-    return nameX < nameY ? -1 : +1;
-  });
-  return tags;
-};
+import { getUserSolves } from "../../platforms/boj/user";
+import { getTagsForDay } from "../../categories/getCategoriesForDay";
+import { chooseProblem } from "../../categories/chooseProblem";
 
 const getIdsForTag = async (
   username: string,
@@ -65,11 +27,11 @@ const getIdsForTag = async (
   level: number,
   solved: Set<string>
 ) => {
-  const ids = await getList(username, tag);
+  const ids = await getList(username, "boj", tag);
   if (ids.length == 0) {
     const promises: Promise<ProblemMetadata[]>[] = [];
     for (let tier = level - 2; tier <= level + 2; tier++) {
-      const tagNames = CATEGORIES[tag].tags.map((t) => t.solvedName);
+      const tagNames = CATEGORIES[tag].tags.boj;
       const queryParts = [
         tagNames.map((name) => `tag:${name}`).join("|"),
         `tier:${tier}`,
@@ -86,17 +48,15 @@ const getIdsForTag = async (
     const byTier = await Promise.all(promises);
     const cachePromises: Promise<void>[] = [];
     for (const forTier of byTier) {
-      for (const problem of forTier) {
-        // cache everything
-        cachePromises.push(cacheProblem(problem));
-      }
+      // cache everything
+      cachePromises.push(cacheProblems(...forTier));
       const unsolved = forTier.filter((p) => !solved.has(p.id));
       const chosen = chooseProblem(unsolved);
       if (chosen) {
         ids.push(chosen.id);
       }
     }
-    cachePromises.push(setList(username, tag, ids));
+    cachePromises.push(setList(username, "boj", tag, ids));
     await Promise.all(cachePromises);
   }
   return ids;
@@ -137,7 +97,7 @@ export const recommendationsGet = async (
       tags.map(async (tag, index) => {
         const ids = idsByTag[index];
         const problemPromises = ids.map(async (id: string) => {
-          const problem = await getProblem(id);
+          const problem = await getProblem("boj", id);
           assert(problem);
           const p: ProblemForUser = {
             problem,

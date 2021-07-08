@@ -1,3 +1,5 @@
+import { Platform } from "./platforms";
+
 export interface User {
   username: string;
   bojId: string;
@@ -7,7 +9,8 @@ export interface User {
 export type ProblemMetadata = {
   id: string;
   title: string;
-  tier: number;
+  platform: Platform;
+  difficulty: number;
   // numSolved: number;
   // numSubs: number;
   // fractionSolved: number;
@@ -15,7 +18,7 @@ export type ProblemMetadata = {
 
 export type ProblemForUser = {
   problem: ProblemMetadata;
-  forUser: string;
+  forUser: string; // username
   solved: boolean;
 };
 

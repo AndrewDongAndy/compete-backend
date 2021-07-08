@@ -7,8 +7,9 @@ import { exit } from "process";
 import config from "./config";
 
 import authRoutes from "./routes/authRoutes";
-import problemRoutes from "./routes/problemRoutes";
-import recommendationsRoutes from "./routes/recommendationsRoutes";
+import bojRecommendationsRoutes from "./routes/boj/recommendationsRoutes";
+import cfRecommendationsRoutes from "./routes/cf/recommendationsRoutes";
+import problemRoutes from "./routes/boj/problemRoutes";
 import userRoutes from "./routes/userRoutes";
 
 import dotenv from "dotenv";
@@ -28,8 +29,9 @@ app.use(express.json());
 
 // routes
 app.use(authRoutes);
+app.use(bojRecommendationsRoutes);
+app.use(cfRecommendationsRoutes);
 app.use(problemRoutes);
-app.use(recommendationsRoutes);
 app.use(userRoutes);
 
 // connect to Mongoose

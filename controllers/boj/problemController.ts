@@ -1,12 +1,12 @@
 /*
-GET /problem/:id
+GET /boj/problem/:id
 
 query parameters:
 id: the id of the problem data to get
 */
 
 import { Request, Response } from "express";
-import { fetchProblemBoj } from "../platforms/boj/fetchProblemsFromBoj";
+import { fetchProblemBoj } from "../../platforms/boj/fetchProblemsFromBoj";
 
 export const problemGet = async (
   req: Request,

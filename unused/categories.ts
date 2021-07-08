@@ -1,5 +1,10 @@
 // ========== FOR SHORTER CODE ==========
 
+type BojTag = {
+  solvedName: string;
+  // bojId: string; // from 1 to ~175
+};
+
 // [tag name on solved.ac, tag ID on BOJ]
 // currently BOJ tag ID isn't being used, so put anything there?
 const math = ["math", "124"] as const;
@@ -42,19 +47,6 @@ const buckets: [string, (readonly [string, string])[]][] = [
   ["Greedy Algorithms", [greedy]],
   ["Geometry", [geom]],
 ];
-
-// ========== END STUFF FOR SHORTER CODE ==========
-
-type Tag = {
-  solvedName: string;
-  bojId: string; // from 1 to ~175
-};
-
-// for this web app
-type Category = {
-  displayName: string;
-  tags: Tag[];
-};
 
 export const CATEGORIES: Category[] = buckets.map(
   ([displayName, tagTuples]) => {

@@ -33,7 +33,6 @@ export const sendRefreshToken = (res: Response, user: IUser): void => {
     // maxAge is in milliseconds
     maxAge: config.REFRESH_TOKEN_EXPIRY_TIME_MILLIS,
   });
-  // console.log("sent refresh token");
 };
 
 /**

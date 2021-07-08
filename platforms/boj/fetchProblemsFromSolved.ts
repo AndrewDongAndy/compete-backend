@@ -30,7 +30,8 @@ export const fetchProblemsSolvedAc = async (
       return {
         id: sp.problemId.toString(),
         title: sp.titleKo,
-        tier: sp.level,
+        platform: "boj",
+        difficulty: sp.level,
       };
     });
   } catch (err) {

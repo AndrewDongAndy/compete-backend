@@ -72,7 +72,8 @@ export const fetchProblemBoj = async (id: string): Promise<FullProblem> => {
   return {
     id,
     title,
-    tier: -1,
+    platform: "boj",
+    difficulty: -1, // TODO: something
     statementHtml: statement,
     inputSpecHtml: inputSpec,
     outputSpecHtml: outputSpec,

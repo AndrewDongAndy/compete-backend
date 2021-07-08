@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 import bcrypt from "bcrypt";
 import isEmail from "validator/lib/isEmail";
-import { CATEGORIES } from "../categories";
+import CATEGORIES from "../categories/categories";
 
 export interface IUser {
   _id: string;
@@ -13,6 +13,9 @@ export interface IUser {
   boj: {
     userId: string;
     levels: number[];
+  };
+  cf: {
+    userId: string;
   };
 
   tokenVersion: number;
@@ -63,6 +66,9 @@ const userSchema = new Schema(
           "invalid array of levels",
         ],
       },
+    },
+    cf: {
+      userId: String,
     },
 
     tokenVersion: {
