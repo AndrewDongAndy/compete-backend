@@ -7,8 +7,8 @@ import { exit } from "process";
 import config from "./config";
 
 import authRoutes from "./routes/authRoutes";
-import bojRecommendationsRoutes from "./routes/boj/recommendationsRoutes";
-import cfRecommendationsRoutes from "./routes/cf/recommendationsRoutes";
+import bojRecsRoutes from "./routes/boj/recsRoutes";
+import cfRecsRoutes from "./routes/cf/recsRoutes";
 import problemRoutes from "./routes/boj/problemRoutes";
 import userRoutes from "./routes/userRoutes";
 
@@ -29,8 +29,8 @@ app.use(express.json());
 
 // routes
 app.use(authRoutes);
-app.use(bojRecommendationsRoutes);
-app.use(cfRecommendationsRoutes);
+app.use(bojRecsRoutes);
+app.use(cfRecsRoutes);
 app.use(problemRoutes);
 app.use(userRoutes);
 

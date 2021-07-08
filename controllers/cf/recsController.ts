@@ -11,7 +11,11 @@ import CATEGORIES from "../../categories/categories";
 import { chooseProblem } from "../../categories/chooseProblem";
 
 import { getTagsForDay } from "../../categories/getCategoriesForDay";
-import { ProblemForUser, ProblemMetadata } from "../../common/interfaces/data";
+import {
+  ProblemForUser,
+  ProblemMetadata,
+  ProblemSets,
+} from "../../common/interfaces/data";
 import { getList, setList } from "../../models/redis/lists";
 import { cacheProblems, getProblem } from "../../models/redis/problems";
 import { User } from "../../models/User";
@@ -60,11 +64,7 @@ const getIdsForTag = async (
   return ids;
 };
 
-export const recommendationsGet = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  // console.log("getting CF recommendations");
+export const recsGet = async (req: Request, res: Response): Promise<void> => {
   const username = req.query.username as string;
 
   const user = await User.findOne({ username });
@@ -84,26 +84,25 @@ export const recommendationsGet = async (
   }
   const idsByTag = await Promise.all(promises);
 
-  const problemSets: (readonly [string, ProblemForUser[]])[] =
-    await Promise.all(
-      tags.map(async (tag, index) => {
-        const ids = idsByTag[index];
-        const problemPromises = ids.map(async (id: string) => {
-          const problem = await getProblem("cf", id);
-          assert(problem);
-          const p: ProblemForUser = {
-            problem,
-            forUser: username,
-            solved: solved.has(id),
-          };
-          return p;
-        });
-        return [
-          CATEGORIES[tag].displayName,
-          await Promise.all(problemPromises),
-        ] as const;
-      })
-    );
+  const problemSets: ProblemSets = await Promise.all(
+    tags.map(async (tag, index) => {
+      const ids = idsByTag[index];
+      const problemPromises = ids.map(async (id: string) => {
+        const problem = await getProblem("cf", id);
+        assert(problem);
+        const p: ProblemForUser = {
+          problem,
+          forUser: username,
+          solved: solved.has(id),
+        };
+        return p;
+      });
+      return [
+        CATEGORIES[tag].displayName,
+        await Promise.all(problemPromises),
+      ] as const;
+    })
+  );
 
   res.status(200).send(problemSets);
 };

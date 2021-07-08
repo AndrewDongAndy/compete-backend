@@ -1,5 +1,5 @@
 /*
-GET /boj/recommendations
+GET /boj/recs
 
 query parameters:
 username (required): the username to fetch the problems for
@@ -8,7 +8,11 @@ username (required): the username to fetch the problems for
 import assert from "assert";
 import { Request, Response } from "express";
 
-import { ProblemMetadata, ProblemForUser } from "../../common/interfaces/data";
+import {
+  ProblemMetadata,
+  ProblemForUser,
+  ProblemSets,
+} from "../../common/interfaces/data";
 import CATEGORIES from "../../categories/categories";
 import { User } from "../../models/User";
 import { fetchProblemsSolvedAc } from "../../platforms/boj/fetchProblemsFromSolved";
@@ -62,11 +66,7 @@ const getIdsForTag = async (
   return ids;
 };
 
-export const recommendationsGet = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  // console.log("fetched recommendations");
+export const recsGet = async (req: Request, res: Response): Promise<void> => {
   const username = req.query.username as string;
 
   const user = await User.findOne({ username });
@@ -92,26 +92,25 @@ export const recommendationsGet = async (
   }
   const idsByTag = await Promise.all(promises);
 
-  const problemSets: (readonly [string, ProblemForUser[]])[] =
-    await Promise.all(
-      tags.map(async (tag, index) => {
-        const ids = idsByTag[index];
-        const problemPromises = ids.map(async (id: string) => {
-          const problem = await getProblem("boj", id);
-          assert(problem);
-          const p: ProblemForUser = {
-            problem,
-            forUser: username,
-            solved: setSolved.has(id),
-          };
-          return p;
-        });
-        return [
-          CATEGORIES[tag].displayName,
-          await Promise.all(problemPromises),
-        ] as const;
-      })
-    );
+  const problemSets: ProblemSets = await Promise.all(
+    tags.map(async (tag, index) => {
+      const ids = idsByTag[index];
+      const problemPromises = ids.map(async (id: string) => {
+        const problem = await getProblem("boj", id);
+        assert(problem);
+        const p: ProblemForUser = {
+          problem,
+          forUser: username,
+          solved: setSolved.has(id),
+        };
+        return p;
+      });
+      return [
+        CATEGORIES[tag].displayName,
+        await Promise.all(problemPromises),
+      ] as const;
+    })
+  );
 
   // console.log(problemSets);
   res.status(200).send(problemSets);

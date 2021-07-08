@@ -10,7 +10,7 @@ import { Request, Response } from "express";
 import { User } from "../models/User";
 
 export const userGet = async (req: Request, res: Response): Promise<void> => {
-  const username = req.params.username as string;
+  const { username } = req.params;
 
   const user = await User.findOne({ username });
   if (user) {
