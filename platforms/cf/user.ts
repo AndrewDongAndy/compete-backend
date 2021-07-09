@@ -3,14 +3,19 @@ import cfAxios from "./cfAxios";
 import { Submission } from "../../common/interfaces/cf/data";
 import { contestProblemId } from "./problems";
 
-export const fetchUserSolves = async (cfId: string): Promise<Set<string>> => {
-  console.log("fetching Codeforces user solves for", cfId);
+export const fetchUserSolves = async (
+  cfId: string,
+  count?: number
+): Promise<Set<string> | null> => {
+  // console.log(`fetching Codeforces user solves for ${cfId}, ${count} entries`);
   try {
     const res = await cfAxios.get("/user.status", {
-      params: { handle: cfId },
+      // if count == undefined then it will get removed
+      params: { handle: cfId, count },
     });
     if (res.data.status != "OK") {
-      throw new Error(`Codeforces API returned error: ${res.data.comment}`);
+      return null;
+      // throw new Error(`Codeforces API returned error: ${res.data.comment}`);
     }
     const subs: Submission[] = res.data.result;
     const solved = new Set<string>();
@@ -21,6 +26,6 @@ export const fetchUserSolves = async (cfId: string): Promise<Set<string>> => {
     }
     return solved;
   } catch (err) {
-    return new Set<string>();
+    return null;
   }
 };

@@ -15,3 +15,8 @@ export interface RegisterFields {
   bojId: string;
   cfId: string;
 }
+
+export interface UpdateFields {
+  bojId: string;
+  cfId: string;
+}

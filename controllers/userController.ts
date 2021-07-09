@@ -6,8 +6,11 @@ username: the username whose data to get
 */
 
 import { Request, Response } from "express";
+import { UpdateFields } from "../common/interfaces/requests";
 
 import { User } from "../models/User";
+import { getUserSolves } from "../platforms/boj/user";
+import { fetchUserSolves } from "../platforms/cf/user";
 
 export const userGet = async (req: Request, res: Response): Promise<void> => {
   const { username } = req.params;
@@ -17,5 +20,49 @@ export const userGet = async (req: Request, res: Response): Promise<void> => {
     res.status(200).send(user);
   } else {
     res.status(404).send({ message: "user does not exist" });
+  }
+};
+
+export const usersGet = async (_req: Request, res: Response): Promise<void> => {
+  const users = await User.find({});
+  res.status(200).send(users);
+};
+
+export const userInfoPut = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { username } = req.params;
+
+  const { bojId, cfId }: UpdateFields = req.body;
+  const user = await User.findOne({ username });
+  if (!user) {
+    res.sendStatus(404);
+    return;
+  }
+  const validBojId = bojId == "" || (await getUserSolves(bojId)) != null;
+  const validCfId = cfId == "" || (await fetchUserSolves(cfId, 1)) != null;
+  if (!validBojId || !validCfId) {
+    res.status(400).send({
+      errors: {
+        bojId: !validBojId ? "that BOJ handle does not exist" : "",
+        cfId: !validCfId ? "that CF handle does not exist" : "",
+      },
+    });
+    return;
+  }
+  try {
+    await User.updateOne(
+      { username },
+      {
+        $set: {
+          "boj.userId": bojId,
+          "cf.userId": cfId,
+        },
+      }
+    );
+    res.sendStatus(201);
+  } catch (err) {
+    res.sendStatus(500);
   }
 };

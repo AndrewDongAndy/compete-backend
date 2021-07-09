@@ -76,6 +76,11 @@ export const recsGet = async (req: Request, res: Response): Promise<void> => {
   }
 
   const solved = await fetchUserSolves(user.cf.userId);
+  if (!solved) {
+    res.status(400).send({ message: "too many requests" });
+    return;
+  }
+  assert(solved);
 
   const tags = await getTagsForDay(username);
   const promises: Promise<string[]>[] = [];
