@@ -107,7 +107,6 @@ export const loginPost = async (req: Request, res: Response): Promise<void> => {
     res.status(200).send({ accessToken });
   } catch (err) {
     const errors = getLoginErrors(err);
-    // console.log(errors);
     res.status(400).send({ errors });
   }
 };

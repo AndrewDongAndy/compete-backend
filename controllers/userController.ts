@@ -34,8 +34,9 @@ export const userInfoPut = async (
 ): Promise<void> => {
   // goes through verifyAccessToken middleware
   const { username } = req.body;
-
   const { bojId, cfId }: UpdateFields = req.body;
+  console.log(`modifying handles for ${username}:`, bojId, cfId);
+
   const user = await User.findOne({ username });
   if (!user) {
     res.sendStatus(404);

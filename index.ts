@@ -34,11 +34,12 @@ app.use(cfRecsRoutes);
 app.use(problemRoutes);
 app.use(userRoutes);
 
-// connect to Mongoose
 mongoose.set("useFindAndModify", false); // suppress the DeprecationWarning
+
 // TODO: remove this "hack" and make top-level await work
 (async () => {
   try {
+    // connect to Mongoose
     await mongoose.connect(process.env.DATABASE_URI, {
       useCreateIndex: true, // suppress the DeprecationWarning
       useNewUrlParser: true,

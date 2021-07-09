@@ -97,8 +97,9 @@ userSchema.statics.login = async function (
   password: string
 ): Promise<IUser> | never {
   username = username.toLowerCase();
-  const user = await this.findOne({ username }).exec();
-  if (user == null) {
+  // password is excluded by default
+  const user = await this.findOne({ username }, "+password");
+  if (!user) {
     throw new Error("that username is not registered");
   }
   if (!(await bcrypt.compare(password, user.password))) {
