@@ -32,7 +32,8 @@ export const userInfoPut = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { username } = req.params;
+  // goes through verifyAccessToken middleware
+  const { username } = req.body;
 
   const { bojId, cfId }: UpdateFields = req.body;
   const user = await User.findOne({ username });
@@ -66,3 +67,12 @@ export const userInfoPut = async (
     res.sendStatus(500);
   }
 };
+
+// export const userDelete = async (
+//   req: Request,
+//   res: Response
+// ): Promise<void> => {
+//   const { username } = req.params;
+//   await User.deleteOne({ username });
+//   res.send(201).send({ message: "user deleted" });
+// };

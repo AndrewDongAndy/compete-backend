@@ -116,27 +116,11 @@ export const logoutPost = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { accessToken } = req.body;
-  // console.log("logout called: received access token", accessToken);
-  if (accessToken == "") {
-    // console.log("empty access token received");
-    res.status(400).send({ ok: false });
-    return;
-  }
+  // goes through verifyAccessToken middleware
+  const { username } = req.body;
+  // console.log("logout called: received username", username);
 
-  // get the payload
-  let payload: any = "";
-  try {
-    payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-  } catch (err) {
-    // console.log("tampered with request?", err);
-    res.status(400).send({ ok: false });
-    return;
-  }
-  // console.log("payload:", payload);
-  const { username } = payload;
-
-  await User.findOneAndUpdate(
+  await User.updateOne(
     { username },
     {
       $inc: { tokenVersion: +1 },
@@ -144,7 +128,7 @@ export const logoutPost = async (
   );
   clearRefreshToken(res);
   // need to send something back, otherwise a timeout response occurs?
-  res.status(200).send({ ok: true });
+  res.sendStatus(200);
 };
 
 export const refreshTokenPost = async (
@@ -187,5 +171,5 @@ export const refreshTokenPost = async (
   }
   sendRefreshToken(res, user);
   response = { ok: true, accessToken: createAccessToken(user) };
-  res.send(response);
+  res.status(201).send(response);
 };

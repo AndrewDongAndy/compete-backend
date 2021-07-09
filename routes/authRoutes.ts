@@ -5,6 +5,7 @@ import {
   refreshTokenPost,
   registerPost,
 } from "../controllers/authController";
+import verifyAccessToken from "../middleware/verifyToken";
 
 const router = Router();
 
@@ -12,7 +13,7 @@ const router = Router();
 // these route strings are also something that could be cleaned up
 router.post("/login", loginPost);
 router.post("/register", registerPost);
-router.post("/logout", logoutPost);
+router.post("/logout", verifyAccessToken, logoutPost);
 router.post("/refresh-token", refreshTokenPost);
 
 export default router;

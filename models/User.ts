@@ -16,6 +16,7 @@ export interface IUser {
   };
   cf: {
     userId: string;
+    levels: number[];
   };
 
   tokenVersion: number;
@@ -48,11 +49,13 @@ const userSchema = new Schema(
       unique: true, // the "unique" requirement can't be handled like the others
       lowercase: true, // convert to lowercase before saving
       validate: [isEmail, "invalid email address"],
+      select: false,
     },
     password: {
       type: String,
       required: [true, "a password is required"],
       minLength: [6, "password must be at least 6 characters"],
+      select: false,
     },
 
     boj: {
@@ -63,12 +66,16 @@ const userSchema = new Schema(
         validate: [
           // all levels must be integers in the range [3, 28]
           (arr: number[]) => arr.every((level) => 3 <= level && level <= 28),
-          "invalid array of levels",
+          "not all levels in the valid range 3 to 28",
         ],
       },
     },
     cf: {
       userId: String,
+      levels: {
+        type: [Number],
+        default: Array(CATEGORIES.length).fill(1000),
+      },
     },
 
     tokenVersion: {

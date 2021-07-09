@@ -25,7 +25,6 @@ import { fetchUserSolves } from "../../platforms/cf/user";
 const getIdsForTag = async (
   username: string,
   tagId: number,
-  // bojId: string,
   level: number,
   solved: Set<string>
 ) => {
@@ -52,7 +51,7 @@ const getIdsForTag = async (
     }
 
     // TODO: don't hard code this
-    for (let d = 2300; d <= 2700; d++) {
+    for (let d = level - 200; d <= level + 200; d++) {
       const unsolved = byRating.get(d)?.filter((p) => !solved.has(p.id)) ?? [];
       const chosen = chooseProblem(unsolved);
       if (chosen) {
@@ -68,9 +67,7 @@ export const recsGet = async (req: Request, res: Response): Promise<void> => {
   const username = req.query.username as string;
 
   const user = await User.findOne({ username });
-  assert(user);
-  // console.log(user);
-  if (!user.cf.userId) {
+  if (!user || !user.cf.userId) {
     res.status(401).send({ message: "Codeforces handle not set" });
     return;
   }
@@ -85,7 +82,7 @@ export const recsGet = async (req: Request, res: Response): Promise<void> => {
   const tags = await getTagsForDay(username);
   const promises: Promise<string[]>[] = [];
   for (const tag of tags) {
-    promises.push(getIdsForTag(username, tag, user.boj.levels[tag], solved));
+    promises.push(getIdsForTag(username, tag, user.cf.levels[tag], solved));
   }
   const idsByTag = await Promise.all(promises);
 
