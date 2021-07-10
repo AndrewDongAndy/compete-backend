@@ -74,7 +74,7 @@ const userSchema = new Schema(
       userId: String,
       levels: {
         type: [Number],
-        default: Array(CATEGORIES.length).fill(1000),
+        default: Array(CATEGORIES.length).fill(1400),
       },
     },
 

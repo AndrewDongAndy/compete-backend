@@ -2,9 +2,9 @@
 Keys are of the form (prefix):<username>:<tagNumber>.
 */
 
+import { listRedis } from "./redisClients";
 import { Platform } from "../../common/interfaces/platforms";
 import { getNextDate } from "./nextDate";
-import { listRedis } from "./redisClients";
 
 export const getList = async (
   username: string,
@@ -27,6 +27,9 @@ export const setList = async (
   tagId: number,
   ids: string[]
 ): Promise<void> => {
+  if (ids.length == 0) {
+    return; // can't call rpush with no arguments
+  }
   const key = `${username}:${platform}:${tagId}`;
   // expire at the next midnight
   const expiryDate = getNextDate();
