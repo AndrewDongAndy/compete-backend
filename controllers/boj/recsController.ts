@@ -42,7 +42,7 @@ const getIdsForTag = async (
         // `!solved_by:${bojId}`, // solved.ac doesn't update very quickly?
         "solvable:true",
         "average_try:..5", // not too many tries needed to solve
-        "solved:25..", // at least 25 people solved
+        "solved:15..", // at least 15 people solved
       ];
       // put brackets around each part for safety;
       // brackets are required when & or | are used in the query?

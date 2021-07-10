@@ -1,11 +1,5 @@
 import { Platform } from "./platforms";
 
-export interface User {
-  username: string;
-  bojId: string;
-  cfId: string;
-}
-
 export type ProblemMetadata = {
   id: string;
   title: string;

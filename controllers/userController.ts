@@ -8,14 +8,14 @@ username: the username whose data to get
 import { Request, Response } from "express";
 import { UpdateFields } from "../common/interfaces/requests";
 
-import { User } from "../models/User";
+import { User as UserModel } from "../models/User";
 import { getUserSolves } from "../platforms/boj/user";
 import { fetchUserSolves } from "../platforms/cf/user";
 
 export const userGet = async (req: Request, res: Response): Promise<void> => {
   const { username } = req.params;
 
-  const user = await User.findOne({ username });
+  const user = await UserModel.findOne({ username });
   if (user) {
     res.status(200).send(user);
   } else {
@@ -24,7 +24,7 @@ export const userGet = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const usersGet = async (_req: Request, res: Response): Promise<void> => {
-  const users = await User.find({});
+  const users = await UserModel.find({});
   res.status(200).send(users);
 };
 
@@ -37,7 +37,7 @@ export const userInfoPut = async (
   const { bojId, cfId }: UpdateFields = req.body;
   console.log(`modifying handles for ${username}:`, bojId, cfId);
 
-  const user = await User.findOne({ username });
+  const user = await UserModel.findOne({ username });
   if (!user) {
     res.sendStatus(404);
     return;
@@ -54,7 +54,7 @@ export const userInfoPut = async (
     return;
   }
   try {
-    await User.updateOne(
+    await UserModel.updateOne(
       { username },
       {
         $set: {
