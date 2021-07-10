@@ -17,6 +17,7 @@ export const setUserTags = async (
   // console.log("setting user tags expiry:", expiryDate, expiryTime);
   await categoriesRedis
     .multi()
+    .del(username) // clear all to be safe and avoid race conditions?
     .sadd(username, tags)
     .expireat(username, expiryTime)
     .exec();
