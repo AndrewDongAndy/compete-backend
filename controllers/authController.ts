@@ -1,5 +1,7 @@
+import assert from "assert";
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
+
 import {
   LoginRequest,
   RefreshTokenResponse,
@@ -17,7 +19,10 @@ import { getUserSolves } from "../platforms/boj/user";
 import { fetchUserSolves } from "../platforms/cf/user";
 
 const getRegisterErrors = async (err): Promise<RegisterFields> => {
+  // console.log(err);
   // console.log(err.message, err.code);
+  // console.log(Object.keys(err.keyPattern));
+
   const errors: RegisterFields = {
     username: "",
     email: "",
@@ -26,9 +31,10 @@ const getRegisterErrors = async (err): Promise<RegisterFields> => {
     cfId: "",
   };
   if (err.code == 11000) {
-    // duplicate something?
-    // TODO: make this better lol
-    errors.email = "a user with that username or email already exists";
+    // a unique field already exists in the database
+    const key = Object.keys(err.keyPattern)[0];
+    assert(key == "username" || key == "email");
+    errors[key] = `a user with that ${key} already exists`;
     return errors;
   }
   if (err.message.includes("User validation failed")) {

@@ -60,6 +60,8 @@ export const fetchProblemBoj = async (id: string): Promise<FullProblem> => {
     outputSpec = data.output;
   }
 
+  // console.log(title, statement);
+
   const table = html.querySelector("table");
   const { rows } = parseTable(table);
   assert(rows.length == 1);
