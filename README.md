@@ -4,6 +4,13 @@ A web app that tracks your competitive programming progress and an all-round tra
 
 ## Features
 
+### To-do
+
+- cache problems from BOJ and Codeforces so that few API calls need to be made when a new user joins
+- save the history of a user's problem recommendations
+- modify the levels each day at midnight
+- show a graph of the user's progress
+
 ### Preparation
 
 - supports multiple judges

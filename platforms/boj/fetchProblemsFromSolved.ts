@@ -13,6 +13,17 @@ type SolvedProblem = {
   averageTries: number; // float
 };
 
+const getMetadata = (p: SolvedProblem): ProblemMetadata => {
+  return {
+    id: p.problemId.toString(),
+    title: p.titleKo,
+    platform: "boj",
+    difficulty: p.level,
+  };
+};
+
+// TODO: cache these queries somehow
+
 export const fetchProblemsSolvedAc = async (
   query: string,
   sort: "id" | "level" | "solved" | "average_try" = "level",
@@ -20,22 +31,18 @@ export const fetchProblemsSolvedAc = async (
   page = 1
 ): Promise<ProblemMetadata[]> => {
   console.log("fetching from solved.ac API:", query);
+  let count: number;
+  let items: SolvedProblem[];
   try {
     const res = await axios.get("https://solved.ac/api/v3/search/problem", {
       params: { query, page, sort, direction },
     });
-    // const count: number = res.data.count;
-    const items: SolvedProblem[] = res.data.items;
-    return items.map<ProblemMetadata>((sp) => {
-      return {
-        id: sp.problemId.toString(),
-        title: sp.titleKo,
-        platform: "boj",
-        difficulty: sp.level,
-      };
-    });
+    count = res.data.count;
+    items = res.data.items;
   } catch (err) {
     console.error(err);
     return [];
   }
+  console.log(`total count: ${count}; fetched: ${items.length}`);
+  return items.map((p) => getMetadata(p));
 };

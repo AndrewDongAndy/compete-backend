@@ -9,8 +9,8 @@
     "strict": true,
     "esModuleInterop": true,
     "outDir": "dist",
-    "skipLibCheck": true
-    // "noEmit": true
+    // "skipLibCheck": true
+    "noEmit": true
     // for compiling with noEmit, just run tsc --noEmit
   },
   "exclude": ["unused"]

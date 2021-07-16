@@ -4,7 +4,7 @@ type Category = {
   displayName: string;
   tags: {
     [key in Platform]: string[];
-    // the boj: key actually contains the tags used on solved.ac
+    // the `boj` key contains the tags used on solved.ac
   };
 };
 
@@ -15,10 +15,10 @@ const CATEGORIES: Category[] = [
       boj: ["math", "combinatorics", "primality_test"],
       cf: [
         "math",
-        // "fft",
-        // "matrices",
-        // "combinatorics",
-        // "chinese remainder theorem",
+        "fft",
+        "matrices",
+        "combinatorics",
+        "chinese remainder theorem",
       ],
     },
   },
@@ -26,11 +26,7 @@ const CATEGORIES: Category[] = [
     displayName: "Strings",
     tags: {
       boj: ["string", "hashing"],
-      cf: [
-        "strings",
-        // "string suffix structures",
-        "hashing",
-      ],
+      cf: ["strings", "string suffix structures", "hashing"],
     },
   },
   {
@@ -44,10 +40,7 @@ const CATEGORIES: Category[] = [
     displayName: "Graph Theory",
     tags: {
       boj: ["graphs", "scc", "biconnected_component", "dijkstra"],
-      cf: [
-        "graphs",
-        // "dfs and similar",
-      ],
+      cf: ["graphs", "dfs and similar"],
     },
   },
   {
@@ -61,10 +54,7 @@ const CATEGORIES: Category[] = [
     displayName: "Flows",
     tags: {
       boj: ["flow", "mcmf", "mfmc", "bipartite_matching"],
-      cf: [
-        "flows",
-        // "graph matchings"
-      ],
+      cf: ["flows", "graph matchings"],
     },
   },
   {

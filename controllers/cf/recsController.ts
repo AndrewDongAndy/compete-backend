@@ -19,7 +19,7 @@ import {
 import { getList, setList } from "../../models/redis/lists";
 import { cacheProblems, getProblem } from "../../models/redis/problems";
 import { User } from "../../models/User";
-import { fetchProblems } from "../../platforms/cf/problems";
+import { getProblemsCf } from "../../platforms/cf/problems";
 import { fetchUserSolves } from "../../platforms/cf/user";
 
 const getIdsForTag = async (
@@ -30,7 +30,7 @@ const getIdsForTag = async (
 ) => {
   const ids = await getList(username, "cf", tagId);
   if (ids.length == 0) {
-    let problems = await fetchProblems(tagId);
+    let problems = await getProblemsCf(tagId);
     problems = problems.filter((problem) => {
       // do newer problems
       const id = problem.id;

@@ -13,6 +13,7 @@ import problemRoutes from "./routes/boj/problemRoutes";
 import userRoutes from "./routes/userRoutes";
 
 import dotenv from "dotenv";
+import { fetchAllCfProblems } from "./platforms/cf/problems";
 dotenv.config();
 
 const app = express();
@@ -38,19 +39,27 @@ mongoose.set("useFindAndModify", false); // suppress the DeprecationWarning
 
 // TODO: remove this "hack" and make top-level await work
 (async () => {
-  try {
-    // connect to Mongoose
-    await mongoose.connect(process.env.DATABASE_URI, {
+  const promises: Promise<any>[] = [];
+
+  // connect to MongoDB
+  promises.push(
+    mongoose.connect(process.env.DATABASE_URI, {
       useCreateIndex: true, // suppress the DeprecationWarning
       useNewUrlParser: true,
       useUnifiedTopology: true,
-    });
-    console.log("connected to MongoDB");
+    })
+  );
+
+  // fetch CF problems
+  promises.push(fetchAllCfProblems());
+
+  try {
+    await Promise.all(promises);
   } catch (err) {
-    console.error("MongoDB database connection error:", err);
+    console.error("server startup error:", err);
     exit(1);
   }
-  // only start server when the database is connected
+
   app.listen(process.env.PORT);
   console.log("listening on port", process.env.PORT);
 })();
