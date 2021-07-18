@@ -5,6 +5,6 @@ describe("Baekjoon Online Judge API", () => {
 
   it("can fetch a user's solves", async () => {
     const solves = await boj.getSolvedIds(bojId);
-    expect(solves.length).toBeGreaterThan(100);
+    expect(solves?.length).toBeGreaterThan(100);
   });
 });
