@@ -16,23 +16,18 @@ interface UserSolves {
   wrong: string[];
 }
 
-export const getUserSolves = async (
-  bojId: string
-): Promise<UserSolves | null> => {
+export const getUserSolves = async (bojId: string): Promise<UserSolves> => {
   let html: HTMLElement;
   try {
     html = await getParsedHtml(userUrl(bojId));
   } catch (err) {
     // axios fetch error
     assert(err.response.status == 404);
-    return null;
+    throw new Error(`the user ${bojId} cannot be fetched`);
   }
   const res: UserSolves = { accepted: [], partial: [], wrong: [] };
 
   const panels = html.querySelectorAll(".panel.panel-default");
-  if (panels.length == 0) {
-    return null;
-  }
   for (const panel of panels) {
     const title = panel.querySelector(".panel-title").innerText;
     const aTags = panel.querySelectorAll(".panel-body > a");

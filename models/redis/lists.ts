@@ -3,12 +3,12 @@ Keys are of the form (prefix):<username>:<tagNumber>.
 */
 
 import { listRedis } from "./redisClients";
-import { Platform } from "../../common/interfaces/platforms";
+import { PlatformName } from "../../common/interfaces/platforms";
 import { getNextDate } from "./nextDate";
 
 export const getList = async (
   username: string,
-  platform: Platform,
+  platform: PlatformName,
   tagId: number
 ): Promise<string[]> => {
   const key = `${username}:${platform}:${tagId}`;
@@ -23,7 +23,7 @@ export const getList = async (
  */
 export const setList = async (
   username: string,
-  platform: Platform,
+  platform: PlatformName,
   tagId: number,
   ids: string[]
 ): Promise<void> => {

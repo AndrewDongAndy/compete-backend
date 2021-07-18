@@ -1,9 +1,9 @@
-import { Platform } from "../common/interfaces/platforms";
+import { PlatformName } from "../common/interfaces/platforms";
 
 type Category = {
   displayName: string;
   tags: {
-    [key in Platform]: string[];
+    [key in PlatformName]: string[];
     // the `boj` key contains the tags used on solved.ac
   };
 };

@@ -1,5 +1,5 @@
 import cfAxios from "./cfAxios";
-import { Submission } from "../../common/interfaces/cf/data";
+import { Submission } from "./data";
 
 export const fetchSubs = async (): Promise<Submission[]> => {
   try {

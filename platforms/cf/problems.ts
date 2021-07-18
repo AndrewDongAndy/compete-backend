@@ -1,8 +1,9 @@
 import cfAxios from "./cfAxios";
 
-import { Problem } from "../../common/interfaces/cf/data";
+import { Problem } from "./data";
 import CATEGORIES from "../../categories/categories";
 import { ProblemMetadata } from "../../common/interfaces/data";
+import { cacheProblems } from "../../models/redis/problems";
 
 export const contestProblemId = (p: Problem): string => {
   return p.contestId + p.index;
@@ -33,24 +34,31 @@ export const fetchAllCfProblems = async (): Promise<void> => {
   if (res.data.status != "OK") {
     throw new Error(`Codeforces API returned error: ${res.data.comment}`);
   }
-  const allProblems = res.data.result.problems;
+  const allProblems: Problem[] = res.data.result.problems;
+  const newerProblems = allProblems.filter(
+    (p) => p.contestId && p.contestId >= 1300
+  );
   // the other field is result.problemStatistics
 
-  for (const p of allProblems) {
+  // no caching required because CF is more lenient with API calls
+  const metadatas: ProblemMetadata[] = [];
+  for (const p of newerProblems) {
     const metadata = getMetadata(p);
+    metadatas.push(metadata);
     for (let i = 0; i < CATEGORIES.length; i++) {
       if (matchesTag(p, i)) {
         byCategory[i].push(metadata);
       }
     }
   }
+
+  await cacheProblems(...metadatas);
+
   for (let i = 0; i < CATEGORIES.length; i++) {
     console.log(`category ${i}: fetched ${byCategory[i].length} problems`);
   }
 };
 
-export const getProblemsCf = async (
-  tagId: number
-): Promise<ProblemMetadata[]> => {
+export const getProblemsCf = (tagId: number): ProblemMetadata[] => {
   return byCategory[tagId];
 };

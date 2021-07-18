@@ -7,14 +7,15 @@ import { exit } from "process";
 import config from "./config";
 
 import authRoutes from "./routes/authRoutes";
-import bojRecsRoutes from "./routes/boj/recsRoutes";
-import cfRecsRoutes from "./routes/cf/recsRoutes";
 import problemRoutes from "./routes/boj/problemRoutes";
+import recsRoutes from "./routes/recsRoutes";
 import userRoutes from "./routes/userRoutes";
 
 import dotenv from "dotenv";
-import { fetchAllCfProblems } from "./platforms/cf/problems";
 dotenv.config();
+
+import { PlatformName } from "./common/interfaces/platforms";
+import { getPlatform } from "./platforms/base/platforms";
 
 const app = express();
 
@@ -30,9 +31,8 @@ app.use(express.json());
 
 // routes
 app.use(authRoutes);
-app.use(bojRecsRoutes);
-app.use(cfRecsRoutes);
 app.use(problemRoutes);
+app.use(recsRoutes);
 app.use(userRoutes);
 
 mongoose.set("useFindAndModify", false); // suppress the DeprecationWarning
@@ -50,8 +50,16 @@ mongoose.set("useFindAndModify", false); // suppress the DeprecationWarning
     })
   );
 
-  // fetch CF problems
-  promises.push(fetchAllCfProblems());
+  const platformNames: PlatformName[] = [
+    // the platforms to use
+    "boj",
+    "cf",
+  ];
+  // fetch problems
+  for (const platformName of platformNames) {
+    const platform = getPlatform(platformName);
+    promises.push(platform.loadProblems());
+  }
 
   try {
     await Promise.all(promises);

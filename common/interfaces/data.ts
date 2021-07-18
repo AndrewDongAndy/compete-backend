@@ -1,9 +1,9 @@
-import { Platform } from "./platforms";
+import { PlatformName } from "./platforms";
 
 export type ProblemMetadata = {
   id: string;
   title: string;
-  platform: Platform;
+  platform: PlatformName;
   difficulty: number;
   // numSolved: number;
   // numSubs: number;
@@ -12,7 +12,7 @@ export type ProblemMetadata = {
 
 export type ProblemForUser = {
   problem: ProblemMetadata;
-  forUser: string; // username
+  forUser: string; // Compete username
   solved: boolean;
 };
 

@@ -1,1 +1,1 @@
-export type Platform = "boj" | "cf";
+export type PlatformName = "boj" | "cf";

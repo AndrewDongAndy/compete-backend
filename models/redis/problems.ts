@@ -5,7 +5,7 @@ Caching the problem data using Redis.
 import { problemsRedis } from "./redisClients";
 
 import { ProblemMetadata } from "../../common/interfaces/data";
-import { Platform } from "../../common/interfaces/platforms";
+import { PlatformName } from "../../common/interfaces/platforms";
 
 const PROBLEM_TTL = 7 * 24 * 60 * 60; // one week, in seconds
 
@@ -14,7 +14,7 @@ const PROBLEM_TTL = 7 * 24 * 60 * 60; // one week, in seconds
 // };
 
 export const getProblem = async (
-  platform: Platform,
+  platform: PlatformName,
   id: string
 ): Promise<ProblemMetadata | null> => {
   const key = `${platform}:${id}`;
@@ -28,7 +28,6 @@ export const getProblem = async (
 export const cacheProblems = async (
   ...problems: ProblemMetadata[]
 ): Promise<void> => {
-  // console.log("caching problem", p.id);
   let multi = problemsRedis.multi();
   for (const p of problems) {
     const key = `${p.platform}:${p.id}`;
