@@ -48,6 +48,9 @@ export const getCategoryIds = async (
   categoryId: number,
   platform: PlatformName
 ): Promise<string[]> => {
+  // this function is only called when the server starts so it is okay
+  // if the values expire while the server is running; fresh data will
+  // just get cached next time
   const key = `${platform}:${categoryId}`;
   const res = await categoriesRedis.smembers(key);
   return res;
