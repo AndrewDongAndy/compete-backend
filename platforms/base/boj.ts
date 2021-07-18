@@ -10,11 +10,11 @@ import { fetchProblemsFromSolvedAc } from "../boj/fetchProblemsFromSolved";
 import { getUserSolves } from "../boj/user";
 import { Platform } from "./Platform";
 
-const sleep = async (milliseconds: number) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, milliseconds);
-  });
-};
+// const sleep = async (milliseconds: number) => {
+//   return new Promise((resolve) => {
+//     setTimeout(resolve, milliseconds);
+//   });
+// };
 
 const fetchProblemsForCategory = async (categoryId: number) => {
   const tagNames = CATEGORIES[categoryId].tags.boj;
@@ -38,7 +38,7 @@ const fetchProblemsForCategory = async (categoryId: number) => {
       undefined,
       page
     );
-    await sleep(500);
+    // await sleep(500);
     all.push(...problems);
     if (problems.length < 100) {
       break;
@@ -61,17 +61,28 @@ const boj: Platform = {
   displayName: "Baekjoon Online Judge",
 
   loadProblems: async () => {
-    for (let c = 0; c < CATEGORIES.length; c++) {
-      const ids = await getCategoryIds(c, "boj");
-      if (ids.length == 0) {
-        const problems = await fetchProblemsForCategory(c); // expensive
-        for (const p of problems) {
-          ids.push(p.id);
-        }
-        await cacheProblems(...problems);
-        await cacheCategoryIds(c, "boj", ids);
+    const test = await getCategoryIds(0, "boj");
+    if (test.length == 0) {
+      // make many expensive calls to solved.ac/api
+      const promises: Promise<ProblemMetadata[]>[] = [];
+      for (let c = 0; c < CATEGORIES.length; c++) {
+        promises.push(fetchProblemsForCategory(c));
       }
+      const byCategory = await Promise.all(promises);
+      const cachePromises: Promise<void>[] = [];
+      for (let c = 0; c < CATEGORIES.length; c++) {
+        const problems = byCategory[c];
+        const ids = problems.map((p) => p.id);
+        cachePromises.push(
+          cacheProblems(...problems),
+          cacheCategoryIds(c, "boj", ids)
+        );
+      }
+      await Promise.all(cachePromises);
+    }
+    for (let c = 0; c < CATEGORIES.length; c++) {
       const promises: Promise<ProblemMetadata | null>[] = [];
+      const ids = await getCategoryIds(c, "boj");
       for (const id of ids) {
         promises.push(getProblem("boj", id));
       }

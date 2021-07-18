@@ -1,0 +1,60 @@
+fetching all CF problems
+redis with prefix "c:" is connected
+redis with prefix "u:" is connected
+redis with prefix "l:" is connected
+redis with prefix "p:" is connected
+total count: 662; fetched: 100
+total count: 289; fetched: 100
+total count: 124; fetched: 100
+total count: 920; fetched: 100
+total count: 2011; fetched: 100
+total count: 662; fetched: 100
+total count: 124; fetched: 24
+total count: 1241; fetched: 100
+total count: 289; fetched: 100
+total count: 920; fetched: 100
+total count: 1023; fetched: 100
+total count: 1112; fetched: 100
+total count: 2011; fetched: 100
+total count: 154; fetched: 100
+total count: 1241; fetched: 100
+total count: 920; fetched: 100
+total count: 662; fetched: 100
+total count: 1023; fetched: 100
+total count: 1112; fetched: 100
+total count: 289; fetched: 89
+total count: 2011; fetched: 100
+total count: 154; fetched: 54
+total count: 662; fetched: 100
+total count: 920; fetched: 100
+total count: 1023; fetched: 100
+total count: 2011; fetched: 100
+total count: 662; fetched: 100
+category 0: fetched 476 problems
+category 1: fetched 105 problems
+category 2: fetched 316 problems
+category 3: fetched 216 problems
+category 4: fetched 262 problems
+category 5: fetched 31 problems
+category 6: fetched 42 problems
+category 7: fetched 496 problems
+category 8: fetched 43 problems
+total count: 1241; fetched: 100
+total count: 1112; fetched: 100
+total count: 920; fetched: 100
+total count: 2011; fetched: 100
+total count: 662; fetched: 100
+total count: 1023; fetched: 100
+total count: 662; fetched: 62
+total count: 1241; fetched: 100
+total count: 1112; fetched: 100
+total count: 920; fetched: 100
+total count: 2011; fetched: 100
+total count: 1023; fetched: 100
+total count: 1241; fetched: 100
+total count: 920; fetched: 100
+total count: 1112; fetched: 100
+total count: 2011; fetched: 100
+total count: 1023; fetched: 100
+total count: 1241; fetched: 100
+total count: 920; fetched: 100
