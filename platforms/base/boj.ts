@@ -62,6 +62,7 @@ const boj: Platform = {
 
   loadProblems: async () => {
     const test = await getCategoryIds(0, "boj");
+    console.log("test length:", test.length);
     if (test.length == 0) {
       // make many expensive calls to solved.ac/api
       const promises: Promise<ProblemMetadata[]>[] = [];
