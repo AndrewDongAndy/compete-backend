@@ -58,7 +58,7 @@ mongoose.set("useFindAndModify", false); // suppress the DeprecationWarning
   // fetch problems
   for (const platformName of platformNames) {
     const platform = getPlatform(platformName);
-    promises.push(platform.loadProblems());
+    promises.push(platform.fetchProblems());
   }
 
   try {

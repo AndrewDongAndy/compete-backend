@@ -4,7 +4,7 @@ import { PlatformName } from "../../common/interfaces/platforms";
 export type Platform = {
   name: PlatformName;
   displayName: string;
-  loadProblems: () => Promise<void>;
+  fetchProblems: () => Promise<void>;
   getSolvedIds: (handle: string) => Promise<string[]>;
   getProblems: (categoryId: number, level: number) => ProblemMetadata[];
   levels: (userLevel: number) => number[];

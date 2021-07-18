@@ -34,11 +34,14 @@ export const fetchAllCfProblems = async (): Promise<void> => {
   if (res.data.status != "OK") {
     throw new Error(`Codeforces API returned error: ${res.data.comment}`);
   }
-  const allProblems: Problem[] = res.data.result.problems;
-  const newerProblems = allProblems.filter(
-    (p) => p.contestId && p.contestId >= 1300
-  );
+
   // the other field is result.problemStatistics
+  const allProblems: Problem[] = res.data.result.problems;
+
+  // only consider newer problems
+  const newerProblems = allProblems.filter(
+    (p) => p.contestId && p.contestId >= 1000
+  );
 
   // no caching required because CF is more lenient with API calls
   const metadatas: ProblemMetadata[] = [];

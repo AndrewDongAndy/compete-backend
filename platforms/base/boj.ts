@@ -60,7 +60,7 @@ const boj: Platform = {
   name: "boj",
   displayName: "Baekjoon Online Judge",
 
-  loadProblems: async () => {
+  fetchProblems: async () => {
     const test = await getCategoryIds(0, "boj");
     console.log("test length:", test.length);
     if (test.length == 0) {

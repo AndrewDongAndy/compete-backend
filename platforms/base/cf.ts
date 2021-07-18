@@ -6,7 +6,7 @@ const cf: Platform = {
   name: "cf",
   displayName: "Codeforces",
 
-  loadProblems: async () => {
+  fetchProblems: async () => {
     await fetchAllCfProblems();
   },
 
