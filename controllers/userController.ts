@@ -9,8 +9,9 @@ import { Request, Response } from "express";
 import { UpdateFields } from "../common/interfaces/requests";
 
 import { User as UserModel } from "../models/User";
-import { getUserSolves } from "../platforms/boj/user";
-import { fetchUserSolves } from "../platforms/cf/user";
+
+import boj from "../platforms/base/boj";
+import cf from "../platforms/base/cf";
 
 export const userGet = async (req: Request, res: Response): Promise<void> => {
   const { username } = req.params;
@@ -42,8 +43,8 @@ export const userInfoPut = async (
     res.sendStatus(404);
     return;
   }
-  const validBojId = bojId == "" || (await getUserSolves(bojId)) != null;
-  const validCfId = cfId == "" || (await fetchUserSolves(cfId, 1)) != null;
+  const validBojId = bojId == "" || (await boj.getSolvedIds(bojId)) != null;
+  const validCfId = cfId == "" || (await cf.getSolvedIds(cfId)) != null;
   if (!validBojId || !validCfId) {
     res.status(400).send({
       errors: {

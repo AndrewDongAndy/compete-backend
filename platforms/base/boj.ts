@@ -7,7 +7,7 @@ import {
 } from "../../models/redis/categories";
 import { cacheProblems, getProblem } from "../../models/redis/problems";
 import { fetchProblemsFromSolvedAc } from "../boj/fetchProblemsFromSolved";
-import { getUserSolves } from "../boj/user";
+import { fetchUserSolves } from "../boj/user";
 import { Platform } from "./Platform";
 
 // const sleep = async (milliseconds: number) => {
@@ -15,6 +15,9 @@ import { Platform } from "./Platform";
 //     setTimeout(resolve, milliseconds);
 //   });
 // };
+
+// the number of problems on each page from the solved.ac API
+const PROBLEMS_PER_PAGE = 100;
 
 const fetchProblemsForCategory = async (categoryId: number) => {
   const tagNames = CATEGORIES[categoryId].tags.boj;
@@ -40,8 +43,8 @@ const fetchProblemsForCategory = async (categoryId: number) => {
     );
     // await sleep(500);
     all.push(...problems);
-    if (problems.length < 100) {
-      break;
+    if (problems.length < PROBLEMS_PER_PAGE) {
+      break; // it's the last page
     }
     ++page;
   }
@@ -62,7 +65,6 @@ const boj: Platform = {
 
   fetchProblems: async () => {
     const test = await getCategoryIds(0, "boj");
-    console.log("test length:", test.length);
     if (test.length == 0) {
       // make many expensive calls to solved.ac/api
       const promises: Promise<ProblemMetadata[]>[] = [];
@@ -96,8 +98,12 @@ const boj: Platform = {
   },
 
   getSolvedIds: async (handle: string) => {
-    const solves = await getUserSolves(handle);
-    return solves.accepted;
+    try {
+      const solves = await fetchUserSolves(handle);
+      return solves.accepted;
+    } catch (err) {
+      return null;
+    }
   },
 
   getProblems: (categoryId: number, level: number) => {

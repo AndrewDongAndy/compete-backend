@@ -58,7 +58,7 @@ export const fetchAllCfProblems = async (): Promise<void> => {
   await cacheProblems(...metadatas);
 
   for (let i = 0; i < CATEGORIES.length; i++) {
-    console.log(`category ${i}: fetched ${byCategory[i].length} problems`);
+    console.log(`cf, category ${i}: fetched ${byCategory[i].length} problems`);
   }
 };
 

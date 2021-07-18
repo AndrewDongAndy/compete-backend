@@ -16,14 +16,14 @@ interface UserSolves {
   wrong: string[];
 }
 
-export const getUserSolves = async (bojId: string): Promise<UserSolves> => {
+export const fetchUserSolves = async (bojId: string): Promise<UserSolves> => {
   let html: HTMLElement;
   try {
     html = await getParsedHtml(userUrl(bojId));
   } catch (err) {
     // axios fetch error
     assert(err.response.status == 404);
-    throw new Error(`the user ${bojId} cannot be fetched`);
+    throw new Error(`the BOJ user ${bojId} does not exist`);
   }
   const res: UserSolves = { accepted: [], partial: [], wrong: [] };
 

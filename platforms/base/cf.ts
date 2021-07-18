@@ -11,8 +11,12 @@ const cf: Platform = {
   },
 
   getSolvedIds: async (handle: string) => {
-    const solves = await fetchUserSolves(handle);
-    return Array.from(solves.values());
+    try {
+      const solves = await fetchUserSolves(handle);
+      return solves;
+    } catch (err) {
+      return null;
+    }
   },
 
   getProblems: (categoryId: number, level: number) => {

@@ -6,7 +6,7 @@ import { contestProblemId } from "./problems";
 export const fetchUserSolves = async (
   cfId: string,
   count?: number
-): Promise<Set<string>> => {
+): Promise<string[]> => {
   // console.log(`fetching Codeforces user solves for ${cfId}, ${count} entries`);
   const res = await cfAxios.get("/user.status", {
     // if count == undefined then it will get removed
@@ -22,5 +22,5 @@ export const fetchUserSolves = async (
       solved.add(contestProblemId(sub.problem));
     }
   }
-  return solved;
+  return Array.from(solved.values());
 };

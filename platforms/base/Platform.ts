@@ -5,7 +5,7 @@ export type Platform = {
   name: PlatformName;
   displayName: string;
   fetchProblems: () => Promise<void>;
-  getSolvedIds: (handle: string) => Promise<string[]>;
+  getSolvedIds: (handle: string) => Promise<string[] | null>;
   getProblems: (categoryId: number, level: number) => ProblemMetadata[];
   levels: (userLevel: number) => number[];
 };

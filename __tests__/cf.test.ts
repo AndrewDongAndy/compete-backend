@@ -5,7 +5,8 @@ describe("Codeforces API", () => {
 
   it("can fetch a user's solves", async () => {
     const solves = await cf.getSolvedIds(cfId);
-    expect(solves.length).toBeGreaterThan(100);
+    expect(solves).not.toBeNull();
+    expect(solves?.length).toBeGreaterThan(100);
   });
 
   it("can fetch newer problems", async () => {

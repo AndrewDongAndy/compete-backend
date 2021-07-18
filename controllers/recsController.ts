@@ -42,7 +42,6 @@ export const recsGet = async (req: Request, res: Response): Promise<void> => {
   const solvedSet = new Set(solved);
 
   const tags = await getTagsForDay(username);
-  // console.log("tags:", tags);
 
   const problemSets: ProblemSets = [];
   for (const categoryId of tags) {

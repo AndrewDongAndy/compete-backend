@@ -15,8 +15,9 @@ import {
   createAccessToken,
   sendRefreshToken,
 } from "../auth/tokens";
-import { getUserSolves } from "../platforms/boj/user";
-import { fetchUserSolves } from "../platforms/cf/user";
+
+import boj from "../platforms/base/boj";
+import cf from "../platforms/base/cf";
 
 const getRegisterErrors = async (err): Promise<RegisterFields> => {
   // console.log(err);
@@ -66,8 +67,8 @@ export const registerPost = async (
   // console.log("received post request for registration");
   const { username, email, password, bojId, cfId }: RegisterFields = req.body;
   try {
-    const validBojId = bojId == "" || (await getUserSolves(bojId)) != null;
-    const validCfId = cfId == "" || (await fetchUserSolves(cfId)) != null;
+    const validBojId = bojId == "" || (await boj.getSolvedIds(bojId)) != null;
+    const validCfId = cfId == "" || (await cf.getSolvedIds(cfId)) != null;
     if (!validBojId || !validCfId) {
       res.status(400).send({
         errors: {
