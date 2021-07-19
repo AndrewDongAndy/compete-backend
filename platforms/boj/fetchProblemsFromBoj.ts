@@ -1,6 +1,6 @@
 import assert from "assert";
 
-import { FullProblem } from "../../common/interfaces/data";
+import { FullProblem } from "../../common/interfaces/problem";
 
 import { getParsedHtml } from "../../util/getHtml";
 import { getTable, parseTable } from "../../util/table";

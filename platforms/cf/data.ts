@@ -14,6 +14,7 @@ export interface Contest {
   relativeTimeSeconds: number;
   // there's some more stuff:
   // https://codeforces.com/apiHelp/objects#Contest
+  description?: string;
 }
 
 export interface Problem {

@@ -2,14 +2,14 @@ import cfAxios from "./cfAxios";
 
 import { Problem } from "./data";
 import CATEGORIES from "../../categories/categories";
-import { ProblemMetadata } from "../../common/interfaces/data";
+import { ProblemMetadata } from "../../common/interfaces/problem";
 import { cacheProblems } from "../../models/redis/problems";
 
 export const contestProblemId = (p: Problem): string => {
   return p.contestId + p.index;
 };
 
-const getMetadata = (p: Problem): ProblemMetadata => {
+export const getMetadata = (p: Problem): ProblemMetadata => {
   return {
     id: contestProblemId(p),
     title: p.name,

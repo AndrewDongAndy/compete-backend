@@ -2,9 +2,9 @@ import assert from "assert";
 import { Request, Response } from "express";
 
 import CATEGORIES from "../categories/categories";
-import { chooseProblem } from "../categories/chooseProblem";
+import { chooseProblem } from "./chooseProblem";
 import { getTagsForDay } from "../categories/getCategoriesForDay";
-import { ProblemForUser, ProblemSets } from "../common/interfaces/data";
+import { ProblemForUser, ProblemSets } from "../common/interfaces/problem";
 import { PlatformName } from "../common/interfaces/platforms";
 import { getList, setList } from "../models/redis/lists";
 import { getProblem } from "../models/redis/problems";

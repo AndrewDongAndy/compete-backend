@@ -36,7 +36,7 @@ export const userInfoPut = async (
   // goes through verifyAccessToken middleware
   const { username } = req.body;
   const { bojId, cfId }: UpdateFields = req.body;
-  console.log(`modifying handles for ${username}:`, bojId, cfId);
+  // console.log(`modifying handles for ${username}:`, bojId, cfId);
 
   const user = await UserModel.findOne({ username });
   if (!user) {

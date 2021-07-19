@@ -1,6 +1,6 @@
 import assert from "assert";
 import CATEGORIES from "../../categories/categories";
-import { ProblemMetadata } from "../../common/interfaces/data";
+import { ProblemMetadata } from "../../common/interfaces/problem";
 import {
   cacheCategoryIds,
   getCategoryIds,
@@ -63,7 +63,7 @@ const boj: Platform = {
   name: "boj",
   displayName: "Baekjoon Online Judge",
 
-  fetchProblems: async () => {
+  loadData: async () => {
     const test = await getCategoryIds(0, "boj");
     if (test.length == 0) {
       // make many expensive calls to solved.ac/api
@@ -110,10 +110,25 @@ const boj: Platform = {
     return problemsByTier[categoryId][level];
   },
 
+  getSubs: async (bojId: string) => {
+    return [];
+  },
+
   levels: (userLevel: number) => {
     const res: number[] = [];
     for (let i = userLevel - 2; i <= userLevel + 2; i++) {
       res.push(i);
+    }
+    return res;
+  },
+
+  evaluateProblem: (problem: ProblemMetadata) => {
+    let res = 0;
+    if (/^[a-z ]*$/i.test(problem.title)) {
+      // keep only the problems whose titles are entirely
+      // alphanumeric to increase the chance of English
+      res += 1;
+      // TODO: query problems from acmicpc.net and use ML to check if it's in English!
     }
     return res;
   },

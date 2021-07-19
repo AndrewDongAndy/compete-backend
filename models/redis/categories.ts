@@ -7,7 +7,7 @@ import { PlatformName } from "../../common/interfaces/platforms";
 import { getNextDate } from "./nextDate";
 import { categoriesRedis } from "./redisClients";
 
-const BY_CATEGORY_TTL = 1 * 24 * 60 * 60; // one day
+const BY_CATEGORY_TTL = 7 * 24 * 60 * 60; // one week
 
 export const getUserTags = async (username: string): Promise<number[]> => {
   // convert to number

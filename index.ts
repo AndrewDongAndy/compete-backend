@@ -9,6 +9,7 @@ import config from "./config";
 import authRoutes from "./routes/authRoutes";
 import problemRoutes from "./routes/boj/problemRoutes";
 import recsRoutes from "./routes/recsRoutes";
+import subsRoutes from "./routes/subsRoutes";
 import userRoutes from "./routes/userRoutes";
 
 import dotenv from "dotenv";
@@ -33,6 +34,7 @@ app.use(express.json());
 app.use(authRoutes);
 app.use(problemRoutes);
 app.use(recsRoutes);
+app.use(subsRoutes);
 app.use(userRoutes);
 
 mongoose.set("useFindAndModify", false); // suppress the DeprecationWarning
@@ -58,7 +60,7 @@ mongoose.set("useFindAndModify", false); // suppress the DeprecationWarning
   // fetch problems
   for (const platformName of platformNames) {
     const platform = getPlatform(platformName);
-    promises.push(platform.fetchProblems());
+    promises.push(platform.loadData());
   }
 
   try {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ProblemMetadata } from "../../common/interfaces/data";
+import { ProblemMetadata } from "../../common/interfaces/problem";
 
 type SolvedProblem = {
   problemId: number;

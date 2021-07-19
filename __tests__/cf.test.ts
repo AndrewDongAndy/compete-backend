@@ -10,6 +10,6 @@ describe("Codeforces API", () => {
   });
 
   it("can fetch newer problems", async () => {
-    await cf.fetchProblems();
+    await cf.loadData();
   });
 });

@@ -9,7 +9,7 @@ interface SubQuery {
   userId?: string;
 }
 
-interface Sub {
+interface BojSub {
   subId: string;
   userId: string;
   problemId: string;
@@ -56,7 +56,7 @@ A row has the form:
 </tr>
 */
 export const getSubs = async ({ problemId, userId }: SubQuery = {}): Promise<
-  Sub[]
+  BojSub[]
 > => {
   const query: string[] = [];
   if (problemId) query.push(`problem_id=${problemId}`);
@@ -66,7 +66,7 @@ export const getSubs = async ({ problemId, userId }: SubQuery = {}): Promise<
   // console.log(url);
 
   const { rows } = await getTable(url, "#status-table");
-  const subs: Sub[] = [];
+  const subs: BojSub[] = [];
   for (const row of rows) {
     subs.push({
       subId: row.childNodes[0].innerText,
