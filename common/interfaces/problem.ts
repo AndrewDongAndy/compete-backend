@@ -1,4 +1,4 @@
-import { PlatformName } from "./platforms";
+import { PlatformName } from "./platformName";
 
 export type ProblemMetadata = {
   id: string;

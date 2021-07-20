@@ -38,6 +38,7 @@ const getRegisterErrors = async (err): Promise<RegisterFields> => {
     errors[key] = `a user with that ${key} already exists`;
     return errors;
   }
+  console.log(err);
   if (err.message.includes("User validation failed")) {
     for (const { properties } of Object.values<any>(err.errors)) {
       // console.log(properties);
@@ -81,15 +82,22 @@ export const registerPost = async (
       });
       return;
     }
+
+    const bojLevels = await boj.calculateLevels(bojId);
+    const cfLevels = await cf.calculateLevels(cfId);
+    console.log(bojLevels);
+    console.log(cfLevels);
     const user = await User.create({
       username,
       email,
       password,
       boj: {
         userId: bojId,
+        levels: bojLevels,
       },
       cf: {
         userId: cfId,
+        levels: cfLevels,
       },
     });
     // successfully created

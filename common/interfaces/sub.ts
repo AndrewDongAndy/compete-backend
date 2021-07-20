@@ -1,7 +1,8 @@
-import { ProblemMetadata } from "./problem";
+import { PlatformName } from "./platformName";
 
 export type Sub = {
-  problem: ProblemMetadata;
+  problemId: string; // not enough data to get Metadata
+  platform: PlatformName;
   subId: string;
   forUser: string;
   verdict: "AC" | "WA" | "RTE" | "CE";

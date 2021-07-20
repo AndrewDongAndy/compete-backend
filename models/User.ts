@@ -66,7 +66,7 @@ const userSchema = new Schema(
         validate: [
           // all levels must be integers in the range [3, 28]
           (arr: number[]) => arr.every((level) => 3 <= level && level <= 28),
-          "not all levels in the valid range 3 to 28",
+          "not all levels are in the valid range 3 to 28",
         ],
       },
     },

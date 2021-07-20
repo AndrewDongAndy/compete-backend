@@ -1,6 +1,7 @@
 import CATEGORIES from "../../categories/categories";
 import { ProblemMetadata } from "../../common/interfaces/problem";
 import { fetchContests, getContestDivision } from "../cf/contests";
+import { User } from "../cf/data";
 import { fetchAllCfProblems, getProblemsCf } from "../cf/problems";
 import { fetchSubs } from "../cf/subs";
 import { fetchUser, fetchUserSolves } from "../cf/user";
@@ -16,7 +17,12 @@ const cf: Platform = {
   },
 
   calculateLevels: async (handle: string) => {
-    const user = await fetchUser(handle);
+    let user: User;
+    try {
+      user = await fetchUser(handle);
+    } catch (err) {
+      return undefined;
+    }
     const level = Math.round(user.maxRating / 100) * 100;
     return CATEGORIES.map(() => level);
   },

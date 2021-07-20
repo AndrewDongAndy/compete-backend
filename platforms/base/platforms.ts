@@ -1,4 +1,4 @@
-import { PlatformName } from "../../common/interfaces/platforms";
+import { PlatformName } from "../../common/interfaces/platformName";
 import { Platform } from "./Platform";
 import boj from "./boj";
 import cf from "./cf";
@@ -15,3 +15,5 @@ export const getPlatform = (name: PlatformName): Platform => {
   }
   return platform;
 };
+
+export const PLATFORMS = Array.from(map.values());

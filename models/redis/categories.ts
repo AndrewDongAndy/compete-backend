@@ -3,7 +3,7 @@ c:<username> stores categories for the day
 c:<judge>:<categoryId> stores a set
 */
 
-import { PlatformName } from "../../common/interfaces/platforms";
+import { PlatformName } from "../../common/interfaces/platformName";
 import { getNextDate } from "./nextDate";
 import { categoriesRedis } from "./redisClients";
 

@@ -98,9 +98,18 @@ const boj: Platform = {
   },
 
   calculateLevels: async (handle: string) => {
+    if (handle == "") {
+      return undefined;
+    }
     const queryParts = [`solved_by:${handle}`];
     const query = queryParts.map((s) => `(${s})`).join(" ");
-    const problems = await fetchProblemsFromSolvedAc(query, "level", "desc");
+    let problems: ProblemMetadata[];
+    try {
+      problems = await fetchProblemsFromSolvedAc(query, "level", "desc");
+    } catch (err) {
+      return undefined;
+    }
+
     let level: number;
     if (problems.length < 20) {
       level = 5;

@@ -52,6 +52,7 @@ export const userInfoPut = async (
     res.sendStatus(404);
     return;
   }
+
   const validBojId = bojId == "" || (await boj.getSolvedIds(bojId)) != null;
   const validCfId = cfId == "" || (await cf.getSolvedIds(cfId)) != null;
   if (!validBojId || !validCfId) {

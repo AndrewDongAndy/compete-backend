@@ -3,7 +3,7 @@ Keys are of the form (prefix):<username>:<tagNumber>.
 */
 
 import { listRedis } from "./redisClients";
-import { PlatformName } from "../../common/interfaces/platforms";
+import { PlatformName } from "../../common/interfaces/platformName";
 import { getNextDate } from "./nextDate";
 
 export const getList = async (

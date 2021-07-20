@@ -15,8 +15,7 @@ import userRoutes from "./routes/userRoutes";
 import dotenv from "dotenv";
 dotenv.config();
 
-import { PlatformName } from "./common/interfaces/platforms";
-import { getPlatform } from "./platforms/base/platforms";
+import { PLATFORMS } from "./platforms/base/platforms";
 
 const app = express();
 
@@ -52,14 +51,8 @@ mongoose.set("useFindAndModify", false); // suppress the DeprecationWarning
     })
   );
 
-  const platformNames: PlatformName[] = [
-    // the platforms to use
-    "boj",
-    "cf",
-  ];
   // fetch problems
-  for (const platformName of platformNames) {
-    const platform = getPlatform(platformName);
+  for (const platform of PLATFORMS) {
     promises.push(platform.loadData());
   }
 

@@ -5,12 +5,12 @@ import CATEGORIES from "../categories/categories";
 import { chooseProblem } from "../categories/chooseProblem";
 import { getCategoriesForDay } from "../categories/getCategoriesForDay";
 import { ProblemForUser, ProblemSets } from "../common/interfaces/problem";
-import { PlatformName } from "../common/interfaces/platforms";
+import { PlatformName } from "../common/interfaces/platformName";
 import { getList, setList } from "../models/redis/lists";
 import { getProblem } from "../models/redis/problems";
+import { getPlatform } from "../platforms/base/platforms";
 
 import { User } from "../models/User";
-import { getPlatform } from "../platforms/base/platforms";
 
 // GET /:platform/recs?username=<Compete username>
 export const recsGet = async (req: Request, res: Response): Promise<void> => {

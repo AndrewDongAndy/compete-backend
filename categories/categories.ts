@@ -1,4 +1,4 @@
-import { PlatformName } from "../common/interfaces/platforms";
+import { PlatformName } from "../common/interfaces/platformName";
 
 type Category = {
   displayName: string;
