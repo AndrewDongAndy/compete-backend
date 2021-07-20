@@ -6,6 +6,7 @@ export type Platform = {
   name: PlatformName;
   displayName: string;
   loadData: () => Promise<void>;
+  calculateLevels: (handle: string) => Promise<number[]>;
   getSolvedIds: (handle: string) => Promise<string[] | null>;
   getProblems: (categoryId: number, level: number) => ProblemMetadata[];
   getSubs: (handle: string) => Promise<Sub[] | null>;

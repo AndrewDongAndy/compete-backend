@@ -16,6 +16,7 @@ export interface RegisterFields {
   cfId: string;
 }
 
+// TODO: make these fields optional
 export interface UpdateFields {
   bojId: string;
   cfId: string;

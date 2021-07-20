@@ -9,13 +9,15 @@ import { categoriesRedis } from "./redisClients";
 
 const BY_CATEGORY_TTL = 7 * 24 * 60 * 60; // one week
 
-export const getUserTags = async (username: string): Promise<number[]> => {
+export const getUserCategories = async (
+  username: string
+): Promise<number[]> => {
   // convert to number
-  const tags = await categoriesRedis.smembers(username);
-  return tags.map((i) => +i);
+  const categories = await categoriesRedis.smembers(username);
+  return categories.map((i) => +i);
 };
 
-export const setUserTags = async (
+export const setUserCategories = async (
   username: string,
   tags: number[]
 ): Promise<void> => {

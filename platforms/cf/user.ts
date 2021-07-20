@@ -1,7 +1,19 @@
 import cfAxios from "./cfAxios";
 
-import { Submission } from "./data";
+import { Submission, User } from "./data";
 import { contestProblemId } from "./problems";
+
+export const fetchUser = async (cfId: string): Promise<User> => {
+  const res = await cfAxios.get("/user.info", {
+    // if count == undefined then it will get removed
+    params: { handles: cfId },
+  });
+  if (res.data.status != "OK") {
+    throw new Error(`Codeforces API returned error: ${res.data.comment}`);
+  }
+  const users: User[] = res.data.result;
+  return users[0];
+};
 
 export const fetchUserSolves = async (
   cfId: string,

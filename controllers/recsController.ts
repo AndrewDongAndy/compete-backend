@@ -2,8 +2,8 @@ import assert from "assert";
 import { Request, Response } from "express";
 
 import CATEGORIES from "../categories/categories";
-import { chooseProblem } from "./chooseProblem";
-import { getTagsForDay } from "../categories/getCategoriesForDay";
+import { chooseProblem } from "../categories/chooseProblem";
+import { getCategoriesForDay } from "../categories/getCategoriesForDay";
 import { ProblemForUser, ProblemSets } from "../common/interfaces/problem";
 import { PlatformName } from "../common/interfaces/platforms";
 import { getList, setList } from "../models/redis/lists";
@@ -41,12 +41,13 @@ export const recsGet = async (req: Request, res: Response): Promise<void> => {
   }
   const solvedSet = new Set(solved);
 
-  const tags = await getTagsForDay(username);
+  const tags = await getCategoriesForDay(username);
 
   const problemSets: ProblemSets = [];
   for (const categoryId of tags) {
     const problemIds = await getList(username, platformName, categoryId);
     if (problemIds.length == 0) {
+      // TODO: do we need mutexes?
       const userLevel = user[platformName].levels[categoryId];
       const levels = platform.levels(userLevel);
       for (const level of levels) {

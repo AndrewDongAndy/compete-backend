@@ -97,6 +97,26 @@ const boj: Platform = {
     }
   },
 
+  calculateLevels: async (handle: string) => {
+    const queryParts = [`solved_by:${handle}`];
+    const query = queryParts.map((s) => `(${s})`).join(" ");
+    const problems = await fetchProblemsFromSolvedAc(query, "level", "desc");
+    let level: number;
+    if (problems.length < 20) {
+      level = 5;
+    } else {
+      // consider at most top 100 problems
+      let sum = 0;
+      for (const problem of problems) {
+        sum += problem.difficulty;
+      }
+      level = Math.round(sum / problems.length);
+      level = Math.max(level, 3);
+      level = Math.min(level, 28);
+    }
+    return CATEGORIES.map(() => level);
+  },
+
   getSolvedIds: async (handle: string) => {
     try {
       const solves = await fetchUserSolves(handle);
@@ -111,6 +131,7 @@ const boj: Platform = {
   },
 
   getSubs: async (bojId: string) => {
+    console.log(`getting BOJ subs for user ${bojId} (unimplemented)`);
     return [];
   },
 

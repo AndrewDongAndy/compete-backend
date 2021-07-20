@@ -3,6 +3,15 @@ GET /user/:username
 
 query parameters:
 username: the username whose data to get
+
+
+GET /users
+returns all users
+
+PUT /user-info
+accessToken: access token for the user to change
+bojId: the new BOJ ID, or an empty string if clearing
+cfId: the new CF ID, or an empty string if clearing
 */
 
 import { Request, Response } from "express";
