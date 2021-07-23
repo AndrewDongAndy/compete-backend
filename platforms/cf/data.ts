@@ -73,6 +73,25 @@ export interface Party {
   startTimeSeconds?: number;
 }
 
+export type Verdict =
+  | "FAILED"
+  | "OK"
+  | "PARTIAL"
+  | "COMPILATION_ERROR"
+  | "RUNTIME_ERROR"
+  | "WRONG_ANSWER"
+  | "PRESENTATION_ERROR"
+  | "TIME_LIMIT_EXCEEDED"
+  | "MEMORY_LIMIT_EXCEEDED"
+  | "IDLENESS_LIMIT_EXCEEDED"
+  | "SECURITY_VIOLATED"
+  | "CRASHED"
+  | "INPUT_PREPARATION_CRASHED"
+  | "CHALLENGED"
+  | "SKIPPED"
+  | "TESTING"
+  | "REJECTED";
+
 export interface Submission {
   id: number;
   contestId?: number;
@@ -81,24 +100,8 @@ export interface Submission {
   problem: Problem;
   author: Party;
   programmingLanguage: string;
-  verdict:
-    | "FAILED"
-    | "OK"
-    | "PARTIAL"
-    | "COMPILATION_ERROR"
-    | "RUNTIME_ERROR"
-    | "WRONG_ANSWER"
-    | "PRESENTATION_ERROR"
-    | "TIME_LIMIT_EXCEEDED"
-    | "MEMORY_LIMIT_EXCEEDED"
-    | "IDLENESS_LIMIT_EXCEEDED"
-    | "SECURITY_VIOLATED"
-    | "CRASHED"
-    | "INPUT_PREPARATION_CRASHED"
-    | "CHALLENGED"
-    | "SKIPPED"
-    | "TESTING"
-    | "REJECTED";
+  verdict: Verdict;
+
   testset:
     | "SAMPLES"
     | "PRETESTS"

@@ -18,7 +18,7 @@ interface BojSub {
   result: string;
   memory: number; // in KB
   runningTime: number; // in ms
-  date: Date;
+  unixDate: number;
 }
 
 const convertToSub = (sub: BojSub): Sub => {
@@ -30,7 +30,7 @@ const convertToSub = (sub: BojSub): Sub => {
     verdict: "WA",
     memory: sub.memory * 1024, // convert to bytes
     runningTime: sub.runningTime,
-    date: sub.date,
+    unixDate: sub.unixDate,
   };
 };
 
@@ -49,8 +49,8 @@ export const getSubs = async (
   const subs: BojSub[] = [];
   for (const row of rows) {
     const dateAnchor = row.querySelector(".show-date");
-    const unixTime = dateAnchor.getAttribute("data-timestamp");
-    assert(unixTime);
+    const unixDate = dateAnchor.getAttribute("data-timestamp");
+    assert(unixDate);
     subs.push({
       subId: row.childNodes[0].innerText,
       userId: row.childNodes[1].childNodes[0].innerText,
@@ -59,7 +59,7 @@ export const getSubs = async (
       // result: row.querySelector(".result>.result-text").firstChild.classNames[0],
       memory: +row.querySelector(".memory").innerText,
       runningTime: +row.querySelector(".time").innerText,
-      date: new Date(unixTime),
+      unixDate: +unixDate,
     });
   }
   return subs.map((s) => convertToSub(s));

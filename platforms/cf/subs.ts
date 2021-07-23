@@ -1,7 +1,25 @@
-import { Sub } from "../../common/interfaces/sub";
+import { Sub, Verdict } from "../../common/interfaces/sub";
 import cfAxios from "./cfAxios";
-import { Submission as CfSubmission } from "./data";
+import { Verdict as CfVerdict, Submission as CfSubmission } from "./data";
 import { contestProblemId } from "./problems";
+
+const VERDICT_CONVERTER: [Verdict, string[]][] = [
+  ["AC", ["OK"]],
+  ["WA", ["WRONG_ANSWER", "PRESENTATION_ERROR"]],
+  ["TLE", ["TIME_LIMIT_EXCEEDED", "IDLENESS_LIMIT_EXCEEDED"]],
+  ["MLE", ["MEMORY_LIMIT_EXCEEDED"]],
+  ["RTE", ["RUNTIME_ERROR"]],
+  ["CE", ["COMPILATION_ERROR"]],
+];
+
+const getVerdict = (v: CfVerdict): Verdict => {
+  for (const [verdict, strings] of VERDICT_CONVERTER) {
+    if (strings.includes(v)) {
+      return verdict;
+    }
+  }
+  return "other";
+};
 
 const convertToSub = (cfSub: CfSubmission): Sub => {
   return {
@@ -9,11 +27,11 @@ const convertToSub = (cfSub: CfSubmission): Sub => {
     platform: "cf",
     subId: cfSub.id.toString(),
     forUser: cfSub.author.members[0].handle,
-    verdict: "WA",
+    verdict: getVerdict(cfSub.verdict),
     memory: cfSub.memoryConsumedBytes,
     runningTime: cfSub.timeConsumedMillis,
     // unix time is in seconds
-    date: new Date(cfSub.creationTimeSeconds * 1000),
+    unixDate: cfSub.creationTimeSeconds,
   };
 };
 
