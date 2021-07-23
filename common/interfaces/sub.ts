@@ -6,6 +6,7 @@ export type Sub = {
   subId: string;
   forUser: string;
   verdict: "AC" | "WA" | "RTE" | "CE";
-  // memory: number;
-  // time: number;
+  date: Date;
+  memory: number; // in bytes
+  runningTime: number; // in milliseconds
 };

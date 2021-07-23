@@ -7,6 +7,7 @@ import {
 } from "../../models/redis/categories";
 import { cacheProblems, getProblem } from "../../models/redis/problems";
 import { fetchProblemsFromSolvedAc } from "../boj/fetchProblemsFromSolved";
+import { getSubs } from "../boj/subs";
 import { fetchUserSolves } from "../boj/user";
 import { Platform } from "./Platform";
 
@@ -140,8 +141,9 @@ const boj: Platform = {
   },
 
   getSubs: async (bojId: string) => {
-    console.log(`getting BOJ subs for user ${bojId} (unimplemented)`);
-    return [];
+    console.log(`getting BOJ subs for user ${bojId}`);
+    const subs = await getSubs(bojId);
+    return subs;
   },
 
   levels: (userLevel: number) => {

@@ -10,6 +10,10 @@ const convertToSub = (cfSub: CfSubmission): Sub => {
     subId: cfSub.id.toString(),
     forUser: cfSub.author.members[0].handle,
     verdict: "WA",
+    memory: cfSub.memoryConsumedBytes,
+    runningTime: cfSub.timeConsumedMillis,
+    // unix time is in seconds
+    date: new Date(cfSub.creationTimeSeconds * 1000),
   };
 };
 

@@ -42,7 +42,8 @@ const cf: Platform = {
   },
 
   getSubs: async (cfId: string) => {
-    return await fetchSubs(cfId);
+    const subs = await fetchSubs(cfId);
+    return subs;
   },
 
   levels: (userLevel: number) => {
