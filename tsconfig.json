@@ -13,5 +13,5 @@
     // "noEmit": true
     // for compiling with noEmit, just run tsc --noEmit
   },
-  "exclude": ["unused"]
+  "exclude": ["unused", "__tests__"]
 }
